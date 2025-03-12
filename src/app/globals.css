@@ -1,0 +1,419 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --sidebarWidth: 180px;
+}
+
+@font-face {
+  font-family: "SF Compact";
+  src: url("/fonts/SF-Compact.ttf") format("opentype");
+}
+
+span,
+h3 {
+  font-family: "SF Compact";
+}
+
+.editor h1 {
+  font-size: 2.5rem;
+}
+
+.editor h2 {
+  font-size: 2rem;
+}
+
+.editor h3 {
+  font-size: 1.75rem;
+}
+
+.editor h4 {
+  font-size: 1.5rem;
+}
+
+.editor h5 {
+  font-size: 1.25rem;
+}
+
+.editor p {
+  font-size: 1rem;
+}
+
+.sidebar {
+  width: var(--sidebarWidth);
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+body::-webkit-scrollbar {
+  display: none !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes translateY {
+  from {
+    transform: translateY(400px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navigator {
+  width: calc(100% - var(--sidebarWidth));
+}
+
+.container-modal {
+  width: calc(100% - var(--sidebarWidth));
+}
+
+.slide-up {
+  animation: slideUp 0.15s cubic-bezier(0.075, 0.82, 0.165, 1) both;
+}
+
+.card-main {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow: 0 50px 90px 1px rgba(0, 0, 0, 0.26);
+  animation: fadeIn 0.6s ease-in-out forwards, zoomIn 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-main:hover {
+  box-shadow: 0 50px 110px 1px rgba(0, 0, 0, 0.5);
+  transform: scale(1.02);
+}
+
+.card-main-banner {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow: 0 50px 90px 1px rgba(0, 0, 0, 0.26);
+  animation: fadeIn 0.6s ease-in-out forwards, zoomIn 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.card-main-banner:hover {
+  box-shadow: 0 50px 110px 1px rgba(0, 0, 0, 0.5);
+  transform: scale(1.02);
+}
+
+.fade-in {
+  opacity: 0;
+}
+
+.card-notes {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow: 0 50px 90px 1px rgba(0, 0, 0, 0.26);
+  animation: fadeIn 0.6s ease-in-out forwards,
+    translateY 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  opacity: 0;
+}
+
+.card-notes:hover {
+  box-shadow: 0 50px 110px 1px rgba(0, 0, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.reflection {
+  position: relative;
+  overflow: hidden;
+}
+
+.reflection::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 100%;
+  position: absolute;
+  top: -180px;
+  left: 0;
+  background-color: #e6e5e5;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.reflection::after {
+  opacity: 1;
+  animation: reflect 7s ease-in-out infinite;
+  -webkit-animation: reflect 7s ease-in-out infinite;
+}
+
+@keyframes reflect {
+  0% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0.5;
+  }
+  81% {
+    transform: scale(4) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(50) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes reflect {
+  0% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0.5;
+  }
+  81% {
+    transform: scale(4) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(50) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.stickyTitle {
+  position: relative;
+  transition: position 0.3s, top 0.3s ease-in-out;
+}
+
+.sticky {
+  position: sticky;
+  top: 74px;
+  z-index: 100;
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --sidebarWidth: 57px;
+  }
+}
+
+.container-items {
+  width: 100%;
+  width: calc(100% - var(--sidebarWidth));
+  margin-left: var(--sidebarWidth);
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-editor {
+  height: calc(100vh - 385px) !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid #e6e5e5 !important;
+  background-color: #fafafa;
+  width: 100%;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+.note-title {
+  position: relative;
+}
+
+.note-title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/vichy.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9;
+  z-index: -1;
+}
+
+@keyframes rotateBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.loader {
+  width: 35px;
+  aspect-ratio: 1;
+  --c1: linear-gradient(
+    90deg,
+    #0000 calc(100% / 3),
+    #0000003c 0 calc(2 * 100% / 3),
+    #00000000 0
+  );
+  --c2: linear-gradient(
+    0deg,
+    #0000 calc(100% / 3),
+    #0000003c 0 calc(2 * 100% / 3),
+    #0000 0
+  );
+  background: var(--c1), var(--c2), var(--c1), var(--c2);
+  background-size: 300% 4px, 4px 300%;
+  background-repeat: no-repeat;
+  animation: l3 1.3s infinite linear;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+}
+
+@keyframes l3 {
+  0% {
+    background-position: 50% 0, 100% 100%, 0 100%, 0 0;
+  }
+  25% {
+    background-position: 0 0, 100% 50%, 0 100%, 0 0;
+  }
+  50% {
+    background-position: 0 0, 100% 0, 50% 100%, 0 0;
+  }
+  75% {
+    background-position: 0 0, 100% 0, 100% 100%, 0 50%;
+  }
+  75.01% {
+    background-position: 100% 0, 100% 0, 100% 100%, 0 50%;
+  }
+  100% {
+    background-position: 50% 0, 100% 0, 100% 100%, 0 100%;
+  }
+}
+
+.spinner-save-data-button {
+  width: 15px;
+  height: 15px;
+  border: 3px solid #fff;
+  border-left-color: black;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e0e0e0 25%, #fafafa 50%, #e0e0e0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 4s infinite;
+  border-radius: 8px;
+}
