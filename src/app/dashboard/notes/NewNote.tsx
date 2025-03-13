@@ -103,6 +103,13 @@ export const NewNote: React.FC<NewNoteProps> = ({
     setShowCategories(false);
   };
 
+  const handleRemoveTag = () => {
+    setFormData((prev) => ({
+      ...prev,
+      selectedItem: null,
+    }));
+  };
+
   const handleSelectedItem = (item: TagItem) => {
     setFormData((prev) => ({
       ...prev,
@@ -237,9 +244,15 @@ export const NewNote: React.FC<NewNoteProps> = ({
           </button>
 
           {formData.selectedItem !== null && (
-            <div className="cursor-pointer hover:bg-gray-800 py-[0.25rem] px-3 rounded-md border bg-black text-white">
-              <span className="text-sm font-extralight select-none leading-none">
+            <div
+              className="relative group cursor-pointer py-[0.25rem] px-3 rounded-md border bg-black text-white transition-colors"
+              onClick={handleRemoveTag}
+            >
+              <span className="text-sm font-extralight select-none leading-none transition-opacity duration-200 group-hover:opacity-0">
                 {formData.selectedItem.name}
+              </span>
+              <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-1 text-sm font-bold opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                x
               </span>
             </div>
           )}

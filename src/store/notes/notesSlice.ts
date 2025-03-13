@@ -23,11 +23,12 @@ export const notesSlice = createSlice({
     addNote: (state, action: PayloadAction<Note>) => {
       const existingIds = new Set(state.notes.map((note) => note.id));
       if (!existingIds.has(action.payload.id)) {
-        state.notes.push(action.payload);
+        state.notes.unshift(action.payload);
       }
     },
     removeNote: (state, action: PayloadAction<string>) => {
       state.notes = state.notes.filter((note) => note.id !== action.payload);
+      state.total = state.total - 1;
     },
     updateNote: (state, action: PayloadAction<Note>) => {
       const index = state.notes.findIndex(
