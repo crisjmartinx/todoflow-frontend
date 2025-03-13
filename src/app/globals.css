@@ -387,6 +387,52 @@ body::-webkit-scrollbar {
   }
 }
 
+.ia-generate {
+  width: 35px;
+  aspect-ratio: 1;
+  opacity: 0;
+  --c1: linear-gradient(
+    90deg,
+    rgba(255, 0, 128, 0.3),
+    rgba(255, 140, 0, 0.3),
+    rgba(255, 255, 0, 0.3),
+    rgba(0, 255, 0, 0.3),
+    rgba(0, 255, 255, 0.3),
+    rgba(0, 0, 255, 0.3),
+    rgba(138, 43, 226, 0.3),
+    rgba(255, 20, 147, 0.3)
+  );
+  --c2: linear-gradient(
+    0deg,
+    rgba(255, 0, 128, 0.3),
+    rgba(255, 140, 0, 0.3),
+    rgba(255, 255, 0, 0.3),
+    rgba(0, 255, 0, 0.3),
+    rgba(0, 255, 255, 0.3),
+    rgba(0, 0, 255, 0.3),
+    rgba(138, 43, 226, 0.3),
+    rgba(255, 20, 147, 0.3)
+  );
+  background: var(--c1), var(--c2), var(--c1), var(--c2);
+  background-size: 300% 4px, 4px 300%;
+  background-repeat: no-repeat;
+  animation: fadeIn 0.5s ease forwards, l3 4s infinite linear;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+}
+
+@keyframes spinColors {
+  0% {
+    background-position: 0% 50%, 0% 50%, 100% 50%, 100% 50%;
+  }
+  50% {
+    background-position: 100% 50%, 100% 50%, 0% 50%, 0% 50%;
+  }
+  100% {
+    background-position: 0% 50%, 0% 50%, 100% 50%, 100% 50%;
+  }
+}
 .spinner-save-data-button {
   width: 15px;
   height: 15px;
@@ -416,4 +462,58 @@ body::-webkit-scrollbar {
   background-size: 400% 100%;
   animation: shimmer 4s infinite;
   border-radius: 8px;
+}
+
+.intelligence-container {
+  position: relative;
+}
+
+.intelligence-effect {
+  background: linear-gradient(
+    45deg,
+    #3b82f6,
+    #8b5cf6,
+    #ec4899,
+    #3b82f6,
+    #8b5cf6
+  );
+  background-size: 400% 400%;
+  animation: intelligenceGradient 0.1s ease infinite;
+  z-index: 1;
+  opacity: 0.9;
+  border-radius: 0.5rem;
+}
+
+@keyframes intelligenceGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.intelligence-container::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(
+    45deg,
+    #3b82f680,
+    #8b5cf680,
+    #ec489980,
+    #3b82f680
+  );
+  background-size: 400% 400%;
+  filter: blur(20px);
+  animation: intelligenceGradient 6s ease infinite;
+  z-index: 0;
+  border-radius: 1rem;
+  opacity: 0.5;
 }
