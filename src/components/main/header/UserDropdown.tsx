@@ -64,12 +64,12 @@ const UserDropdown = ({ handleLogout }: Props) => {
       {isOpen && (
         <div className="fixed right-5 mt-2 w-48 bg-white shadow-2xl rounded-lg border z-[100]">
           <ul className="py-1">
-            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight">
+            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight text-black">
               <span>Perfil</span>
 
               <User size={17} />
             </li>
-            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointe font-extralight">
+            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointe font-extralight text-black">
               <span>Configuración</span>
 
               <Settings size={17} />
@@ -77,7 +77,7 @@ const UserDropdown = ({ handleLogout }: Props) => {
 
             <hr className="mx-2" />
             <li
-              className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight"
+              className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight text-black"
               onClick={handleLogout}
             >
               <span>Cerrar sesión</span>
