@@ -338,13 +338,19 @@ export default function page() {
             <div className="text-center mt-6 pt-3">
               {/* <span className="font-extralight text-gray-500">
                 No tiene cuenta ?
-              </span>
-              <a className="mx-2 underline text-black font-light" href="">
+                </span>
+                <a className="mx-2 underline text-black font-light" href="">
                 Registrar
-              </a> */}
+                </a> */}
             </div>
           </form>
         </div>
+      </div>
+
+      <div className="absolute bottom-5 text-center w-full">
+        <h5 className="text-center font-extralight text-gray-800">
+          Cristian's Project © 2025
+        </h5>
       </div>
     </div>
   );

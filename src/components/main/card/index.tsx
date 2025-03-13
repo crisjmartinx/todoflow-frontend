@@ -89,7 +89,7 @@ const Card: React.FC<Props> = ({
 
             <div>
               <span className="block text-[18px] font-semibold text-black select-none py-1 whitespace-nowrap overflow-hidden text-ellipsis">
-                {!loading ? (
+                {loading ? (
                   <div
                     className="spinner-save-data-button inline-block"
                     style={{

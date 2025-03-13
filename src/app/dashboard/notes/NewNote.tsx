@@ -126,7 +126,12 @@ export const NewNote: React.FC<NewNoteProps> = ({
   };
 
   const handleInteligence = () => {
-    // setActivateIA((prev) => !prev);
+    setActivateIA((prev) => !prev);
+
+    setTimeout(() => {
+      alert("Proximamente!!");
+      setActivateIA(false);
+    }, 3000);
   };
 
   useNoteAutoSave({
