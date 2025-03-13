@@ -3,7 +3,6 @@
 import {
   BellRing,
   BookOpenText,
-  ChartLine,
   House,
   ListChecks,
   Notebook,
@@ -47,7 +46,7 @@ export default function Sidebar() {
     {
       id: 6,
       icon: <BookOpenText color="black" size={18} />,
-      name: "Learn",
+      name: "Aprendizaje",
       path: "/dashboard/learn",
     },
   ];
