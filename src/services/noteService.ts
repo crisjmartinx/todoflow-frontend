@@ -1,8 +1,6 @@
 import axios from "axios";
 
 import { getServerSession } from "next-auth";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
 import { ApiResponse } from "@/types/note-interface";
 import { Note } from "@/types";
 import { authOptions } from "@/lib/auth";

@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { getServerSession } from "next-auth";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { TagCategory } from "@/types";
 import { authOptions } from "@/lib/auth";
 
