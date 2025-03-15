@@ -8,6 +8,9 @@ import { signIn } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 10000;
+
 export default function page() {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -20,32 +23,93 @@ export default function page() {
   const passwordText = "Test123!ABCHWGG";
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const avatar = email ? email[0].toLocaleUpperCase() : "";
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (
+    e: React.FormEvent<HTMLFormElement>,
+    retryCount = 0
+  ) => {
     e.preventDefault();
 
-    setLoading(true);
-
-    const responseNextAuth = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-      remember: rememberMe,
-    });
-
-    setLoading(false);
-
-    if (responseNextAuth?.error) {
-      setErrors(responseNextAuth.error.split(","));
-      return;
+    if (retryCount === 0) {
+      setLoading(true);
+      setErrors([]);
+      setServerError(null);
     }
 
-    router.push("/dashboard/main");
+    try {
+      const responseNextAuth = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        remember: rememberMe,
+      });
+
+      if (!responseNextAuth) {
+        throw new Error("❌ No hay respuesta del servidor");
+      }
+
+      if (responseNextAuth.error) {
+        if (
+          responseNextAuth.error.includes("Credentials") ||
+          responseNextAuth.error.includes("Password incorrect")
+        ) {
+          setErrors((prevErrors) => [
+            ...prevErrors,
+            ...(responseNextAuth.error ? [responseNextAuth.error] : []),
+          ]);
+          setLoading(false);
+          return;
+        }
+
+        setErrors((prevErrors) => [
+          ...prevErrors,
+          ...(responseNextAuth.error ? [responseNextAuth.error] : []),
+        ]);
+        throw new Error(`⚠️ Error en autenticación: ${responseNextAuth.error}`);
+      }
+
+      setLoading(false);
+      router.push("/dashboard/main");
+    } catch (error) {
+      let errorMessage = "Error desconocido";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
+
+      setErrors((prevErrors) => [...prevErrors, errorMessage]);
+
+      if (errorMessage.includes("Cannot POST")) {
+        setServerError(
+          "No se pudo establecer comunicación con el servidor, reintente."
+        );
+      }
+
+      setLoading(false);
+
+      if (retryCount < MAX_RETRIES) {
+        if (
+          !errorMessage.includes("Credentials") &&
+          !errorMessage.includes("Password incorrect")
+        ) {
+          setTimeout(() => {
+            handleLogin(e, retryCount + 1);
+          }, RETRY_DELAY);
+        }
+      } else {
+        console.error(
+          "⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión."
+        );
+      }
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -267,6 +331,12 @@ export default function page() {
                 )}
               </button>
             </div>
+
+            {serverError && (
+              <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
+                <span className="font-medium text-red-600">{serverError}</span>
+              </div>
+            )}
 
             {/* <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
               <span className="bg-[#bababa] w-[85px] h-[0.5px]"></span>
