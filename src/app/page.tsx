@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 4;
 const RETRY_DELAY = 10000;
 
 export default function page() {
@@ -87,13 +87,13 @@ export default function page() {
 
       setErrors((prevErrors) => [...prevErrors, errorMessage]);
 
-      if (errorMessage.includes("Cannot POST")) {
+      if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
         setServerError(
           "No se pudo establecer comunicación con el servidor, reintente."
         );
-      }
 
-      setLoading(false);
+        setLoading(false);
+      }
 
       if (retryCount < MAX_RETRIES) {
         if (
@@ -311,7 +311,7 @@ export default function page() {
               </div>
             </div>
 
-            <div className="w-full flex justify-center pt-7 mt-2">
+            <div className="w-full flex justify-center pt-7 mt-2 mb-10 ">
               <button
                 type="submit"
                 disabled={loading}
@@ -332,11 +332,11 @@ export default function page() {
               </button>
             </div>
 
-            {serverError && (
-              <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
+            <div className="w-full text-center" style={{ minHeight: "24px" }}>
+              {serverError && (
                 <span className="font-medium text-red-600">{serverError}</span>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
               <span className="bg-[#bababa] w-[85px] h-[0.5px]"></span>
