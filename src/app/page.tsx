@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
@@ -12,6 +12,8 @@ const MAX_RETRIES = 4;
 const RETRY_DELAY = 10000;
 
 export default function page() {
+  const { data: session, status } = useSession();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
@@ -151,194 +153,217 @@ export default function page() {
     typeText(setPassword, passwordText, 30);
   }, []);
 
+  useEffect(() => {
+    if (session?.user && status === "authenticated") {
+      router.replace("/dashboard/main");
+    }
+  }, [session, status, router]);
+
   return (
-    <div className=" bg-[#FAFAFA] h-screen w-full flex items-center">
-      <div className="mx-auto p-3 w-[34rem]">
-        <div className="h-auto  ">
-          <div className="bg-black w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
-            <span
-              className="text-white text-3xl font-medium"
-              style={{
-                transform:
-                  avatar.length > 0 ? "translateX(0)" : "translateX(2.25rem)",
-                transition:
-                  "transform cubic-bezier(0.175, 0.885, 0.32, 1.275) .1s",
-              }}
-            >
-              {avatar}
-            </span>
-          </div>
+    <>
+      {status === "loading" && (
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-gray-900"></div>
+        </div>
+      )}
 
-          <div className="text-center mt-2 pt-9">
-            <h5 className="font-semibold text-3xl text-black">Bienvenido</h5>
-            <span className="font-extralight text-lg block pt-2 text-gray-500">
-              Ingresa mail & clave para continuar
-            </span>
-          </div>
-
-          <form onSubmit={handleLogin}>
-            <div className="inline-flex justify-center items-center pt-7 mt-3 w-full">
-              <div
-                className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
-                style={{
-                  flex: "0 1 335px",
-                  boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
-                  border: errors.includes("User not found")
-                    ? "2px solid red"
-                    : "",
-                  animation: errors.includes("User not found")
-                    ? "shake 0.3s"
-                    : "none",
-                }}
-              >
-                <Mail
-                  className="text-[#3d3d3d] m-1"
-                  style={{ flex: "1 0 23px" }}
-                />
-
-                <span className="bg-[#bababa] w-[1px] h-8"></span>
-
-                <input
-                  className="text-[#3d3d3d] p-2 focus:outline-none"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your mail"
-                  value={email}
-                  disabled={loading}
+      {status === "unauthenticated" && (
+        <div className=" bg-[#FAFAFA] h-screen w-full flex items-center">
+          <div className="mx-auto p-3 w-[34rem]">
+            <div className="h-auto  ">
+              <div className="bg-black w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
+                <span
+                  className="text-white text-3xl font-medium"
                   style={{
-                    borderRadius: "5px",
-                    backgroundColor: errors.includes("User not found")
-                      ? "#ff00001a"
-                      : "transparent",
-                    width: "100%",
-                    height: "35px",
-                    animation: errors.includes("User not found")
-                      ? "shake 0.3s"
-                      : "none",
+                    transform:
+                      avatar.length > 0
+                        ? "translateX(0)"
+                        : "translateX(2.25rem)",
+                    transition:
+                      "transform cubic-bezier(0.175, 0.885, 0.32, 1.275) .1s",
                   }}
-                  onChange={handleInputChange}
-                />
+                >
+                  {avatar}
+                </span>
               </div>
-            </div>
 
-            <div className="inline-flex justify-center items-center py-4 mb-1 w-full">
-              <div
-                className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
-                style={{
-                  flex: "0 1 335px",
-                  boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
-                  border: errors.includes("Password incorrect")
-                    ? "2px solid red"
-                    : "",
-                  animation: errors.includes("Password incorrect")
-                    ? "shake 0.3s"
-                    : "none",
-                }}
-              >
-                <KeyRound
-                  className="text-[#3d3d3d] m-1"
-                  style={{ flex: "1 0 23px" }}
-                />
-
-                <span className="bg-[#bababa] w-[1px] h-8"></span>
-
-                <input
-                  className="text-[#3d3d3d] p-2 focus:outline-none"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  disabled={loading}
-                  style={{
-                    borderRadius: "5px",
-                    backgroundColor: errors.includes("Password incorrect")
-                      ? "#ff00001a"
-                      : "transparent",
-                    width: "100%",
-                    height: "35px",
-                  }}
-                  onChange={handleInputChange}
-                />
-
-                {showPassword ? (
-                  <EyeOff
-                    size={31}
-                    className="text-[#3d3d3d] m-1 cursor-pointer"
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                  />
-                ) : (
-                  <Eye
-                    size={31}
-                    className="text-[#3d3d3d] m-1 cursor-pointer"
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                  />
-                )}
+              <div className="text-center mt-2 pt-9">
+                <h5 className="font-semibold text-3xl text-black">
+                  Bienvenido
+                </h5>
+                <span className="font-extralight text-lg block pt-2 text-gray-500">
+                  Ingresa mail & clave para continuar
+                </span>
               </div>
-            </div>
 
-            <div className="flex w-full justify-around">
-              <div
-                style={{
-                  flex: "0 1 335px",
-                }}
-              >
-                <div className="flex justify-between flex-wrap">
-                  <label className="flex items-center gap-4 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="hidden peer"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
+              <form onSubmit={handleLogin}>
+                <div className="inline-flex justify-center items-center pt-7 mt-3 w-full">
+                  <div
+                    className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
+                    style={{
+                      flex: "0 1 335px",
+                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
+                      border: errors.includes("User not found")
+                        ? "2px solid red"
+                        : "",
+                      animation: errors.includes("User not found")
+                        ? "shake 0.3s"
+                        : "none",
+                    }}
+                  >
+                    <Mail
+                      className="text-[#3d3d3d] m-1"
+                      style={{ flex: "1 0 23px" }}
                     />
-                    <span className="w-6 h-6 border border-gray-300 rounded-[8px] peer-checked:bg-black"></span>
-                    <span className="text-gray-500 font-light cursor-default">
-                      Recordar
-                    </span>
-                  </label>
 
-                  {/* <a className="text-black font-light" href="">
+                    <span className="bg-[#bababa] w-[1px] h-8"></span>
+
+                    <input
+                      className="text-[#3d3d3d] p-2 focus:outline-none"
+                      type="email"
+                      name="email"
+                      placeholder="Enter your mail"
+                      value={email}
+                      disabled={loading}
+                      style={{
+                        borderRadius: "5px",
+                        backgroundColor: errors.includes("User not found")
+                          ? "#ff00001a"
+                          : "transparent",
+                        width: "100%",
+                        height: "35px",
+                        animation: errors.includes("User not found")
+                          ? "shake 0.3s"
+                          : "none",
+                      }}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="inline-flex justify-center items-center py-4 mb-1 w-full">
+                  <div
+                    className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
+                    style={{
+                      flex: "0 1 335px",
+                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
+                      border: errors.includes("Password incorrect")
+                        ? "2px solid red"
+                        : "",
+                      animation: errors.includes("Password incorrect")
+                        ? "shake 0.3s"
+                        : "none",
+                    }}
+                  >
+                    <KeyRound
+                      className="text-[#3d3d3d] m-1"
+                      style={{ flex: "1 0 23px" }}
+                    />
+
+                    <span className="bg-[#bababa] w-[1px] h-8"></span>
+
+                    <input
+                      className="text-[#3d3d3d] p-2 focus:outline-none"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      disabled={loading}
+                      style={{
+                        borderRadius: "5px",
+                        backgroundColor: errors.includes("Password incorrect")
+                          ? "#ff00001a"
+                          : "transparent",
+                        width: "100%",
+                        height: "35px",
+                      }}
+                      onChange={handleInputChange}
+                    />
+
+                    {showPassword ? (
+                      <EyeOff
+                        size={31}
+                        className="text-[#3d3d3d] m-1 cursor-pointer"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      />
+                    ) : (
+                      <Eye
+                        size={31}
+                        className="text-[#3d3d3d] m-1 cursor-pointer"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      />
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex w-full justify-around">
+                  <div
+                    style={{
+                      flex: "0 1 335px",
+                    }}
+                  >
+                    <div className="flex justify-between flex-wrap">
+                      <label className="flex items-center gap-4 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="hidden peer"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                        />
+                        <span className="w-6 h-6 border border-gray-300 rounded-[8px] peer-checked:bg-black"></span>
+                        <span className="text-gray-500 font-light cursor-default">
+                          Recordar
+                        </span>
+                      </label>
+
+                      {/* <a className="text-black font-light" href="">
                     Recuperar clave
                   </a> */}
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full flex justify-center pt-7 mt-2 mb-10 ">
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-[#000] text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
-                style={{
-                  flex: "0 1 335px",
-                  boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28);",
-                }}
-              >
-                {loading ? (
-                  <div className="flex justify-center items-center">
-                    <span className="mr-3">Accediendo</span>
-                    <div className="spinner-save-data-button"></div>
+                    </div>
                   </div>
-                ) : (
-                  <span>Acceder</span>
-                )}
-              </button>
-            </div>
+                </div>
 
-            <div className="w-full text-center" style={{ minHeight: "24px" }}>
-              {serverError && (
-                <span className="font-medium text-red-600">{serverError}</span>
-              )}
-            </div>
+                <div className="w-full flex justify-center pt-7 mt-2 mb-10 ">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-[#000] text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
+                    style={{
+                      flex: "0 1 335px",
+                      boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28);",
+                    }}
+                  >
+                    {loading ? (
+                      <div className="flex justify-center items-center">
+                        <span className="mr-3">Accediendo</span>
+                        <div className="spinner-save-data-button"></div>
+                      </div>
+                    ) : (
+                      <span>Acceder</span>
+                    )}
+                  </button>
+                </div>
 
-            {/* <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
+                <div
+                  className="w-full text-center"
+                  style={{ minHeight: "24px" }}
+                >
+                  {serverError && (
+                    <span className="font-medium text-red-600">
+                      {serverError}
+                    </span>
+                  )}
+                </div>
+
+                {/* <div className="w-full flex justify-center items-center pt-3 my-6 pb-5">
               <span className="bg-[#bababa] w-[85px] h-[0.5px]"></span>
               <span className="mx-5 font-extralight text-gray-500">
                 Iniciar sesión con
@@ -346,7 +371,7 @@ export default function page() {
               <span className="bg-[#bababa] w-[85px] h-[0.5px]"></span>
             </div> */}
 
-            {/* <div className="w-full flex justify-center items-center">
+                {/* <div className="w-full flex justify-center items-center">
               <div
                 className="flex justify-center w-full  gap-3"
                 style={{ flex: "0 1 335px" }}
@@ -405,23 +430,25 @@ export default function page() {
               </div>
             </div> */}
 
-            <div className="text-center mt-6 pt-3">
-              {/* <span className="font-extralight text-gray-500">
+                <div className="text-center mt-6 pt-3">
+                  {/* <span className="font-extralight text-gray-500">
                 No tiene cuenta ?
                 </span>
                 <a className="mx-2 underline text-black font-light" href="">
                 Registrar
                 </a> */}
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      </div>
+          </div>
 
-      <div className="absolute bottom-5 text-center w-full">
-        <h5 className="text-center font-extralight text-gray-800">
-          Cristian's Project © 2025
-        </h5>
-      </div>
-    </div>
+          <div className="absolute bottom-5 text-center w-full">
+            <h5 className="text-center font-extralight text-gray-800">
+              Cristian's Project © 2025
+            </h5>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -44,6 +44,11 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // Expira en 30 días
+  },
+  
   pages: {
     signIn: "/",
   },
