@@ -202,10 +202,10 @@ export default function page() {
                     className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
+                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08)",
                       border: errors.includes("User not found")
                         ? "2px solid red"
-                        : "",
+                        : "none",
                       animation: errors.includes("User not found")
                         ? "shake 0.3s"
                         : "none",
@@ -246,10 +246,10 @@ export default function page() {
                     className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08);",
+                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08)",
                       border: errors.includes("Password incorrect")
                         ? "2px solid red"
-                        : "",
+                        : "none",
                       animation: errors.includes("Password incorrect")
                         ? "shake 0.3s"
                         : "none",
@@ -338,7 +338,7 @@ export default function page() {
                     className="bg-[#000] text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28);",
+                      boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28)",
                     }}
                   >
                     {loading ? (
