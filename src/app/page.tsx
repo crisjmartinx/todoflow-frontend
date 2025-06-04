@@ -57,18 +57,21 @@ export default function page() {
     }
 
     if (responseNextAuth.error) {
-      const errorMsg = responseNextAuth.error.trim();
+      const authError = responseNextAuth.error?.trim();
+
       if (
-        errorMsg.includes("Credentials") ||
-        errorMsg.includes("Password incorrect")
+        authError &&
+        (authError.includes("Credentials") || authError.includes("Password incorrect"))
       ) {
-        setErrors(prevErrors => [...prevErrors, errorMsg]);
+        setErrors((prevErrors) => [...prevErrors, authError]);
         setLoading(false);
         return;
       }
 
-      setErrors(prevErrors => [...prevErrors, errorMsg]);
-      throw new Error(`⚠️ Error en autenticación: ${errorMsg}`);
+      if (authError) {
+        setErrors((prevErrors) => [...prevErrors, authError]);
+        throw new Error(`⚠️ Error en autenticación: ${authError}`);
+      }
     }
 
     setLoading(false);
@@ -78,11 +81,15 @@ export default function page() {
 
     if (error instanceof Error) {
       errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
     }
 
     console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
 
-    setErrors(prevErrors => [...prevErrors, errorMessage]);
+    if (errorMessage) {
+      setErrors((prevErrors) => [...prevErrors, errorMessage]);
+    }
 
     if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
       setServerError(
