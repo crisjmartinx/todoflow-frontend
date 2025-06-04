@@ -8,7 +8,7 @@ import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
-const MAX_RETRIES = 4;
+const MAX_RETRIES = 2;
 const RETRY_DELAY = 10000;
 
 export default function page() {
