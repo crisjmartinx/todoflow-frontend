@@ -158,6 +158,8 @@ export default function page() {
       router.replace("/dashboard/main");
     }
   }, [session, status, router]);
+  
+  console.log(serverError);
 
   return (
     <>
