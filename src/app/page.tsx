@@ -8,8 +8,8 @@ import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
-const MAX_RETRIES = 2;
-const RETRY_DELAY = 10000;
+const MAX_RETRIES = 1;
+const RETRY_DELAY = 3000;
 
 export default function page() {
   const { data: session, status } = useSession();
@@ -48,7 +48,7 @@ export default function page() {
     let timerId: NodeJS.Timeout | null = null;
 
     try {
-      // → a) Promesa signIn(…) de NextAuth
+      // ––– a) Promesa signIn de NextAuth (puede tardar indefinidamente)
       const loginPromise = signIn("credentials", {
         email,
         password,
@@ -56,59 +56,60 @@ export default function page() {
         remember: rememberMe,
       });
 
-      // → b) Promesa timeout de 5 segundos
+      // ––– b) Promesa timeout de 5 segundos
       const timeoutPromise = new Promise<never>((_, reject) => {
         timerId = setTimeout(() => {
           reject(new Error("Timeout de 5s al conectar al servidor"));
         }, RETRY_DELAY);
       });
 
-      // → c) Promise.race para que gane quien resuelva primero
+      // ––– c) Promise.race: gana quien responda primero (loginPromise o timeout)
       const responseNextAuth = (await Promise.race([
         loginPromise,
         timeoutPromise,
       ])) as Awaited<ReturnType<typeof signIn>>;
 
-      // Limpio el timeout si la promesa signIn se resolvió primero
+      // Si signIn respondió antes de 5 s, limpio el timeout
       if (timerId) {
         clearTimeout(timerId);
         timerId = null;
       }
 
-      // → Si NextAuth no devuelve nada
+      // ––– d) Si NextAuth no devuelve nada
       if (!responseNextAuth) {
         throw new Error("❌ No hay respuesta del servidor");
       }
 
-      // → Si hay un error de autenticación
+      // ––– e) Si NextAuth devolvió un error (por ejemplo, credenciales inválidas)
       if (responseNextAuth.error) {
         const authError = responseNextAuth.error.trim();
 
-        // 2a) Error de credenciales → mostrar en errors y detener
-        if (
+        // 1) Si es error de credenciales: muestro en “errors” y paro sin reintentos
+        const isCredError =
           authError.includes("Credentials") ||
-          authError.includes("Password incorrect")
-        ) {
+          authError.includes("Password incorrect");
+        if (isCredError) {
           setErrors((prev) => [...prev, authError]);
           setLoading(false);
           return;
         }
 
-        // 2b) Cualquier otro error → agregar a errors y lanzar excepción
+        // 2) Cualquier otro error de NextAuth: lo agrego a “errors” y relanzo
         setErrors((prev) => [...prev, authError]);
         throw new Error(`⚠️ Error en autenticación: ${authError}`);
       }
 
-      // → Si todo salió bien, redirijo a dashboard
+      // ––– f) Si no hubo error, NextAuth fue exitoso
       setLoading(false);
       router.push("/dashboard/main");
     } catch (err) {
-      // ← Llego acá si signIn tardó más de 5s (timeout) o hubo otro error
+      // ← Llegamos acá si falló el login (timeout, fallo de conexión, URL inválida, etc.)
       if (timerId) {
         clearTimeout(timerId);
         timerId = null;
       }
 
+      // Determino mensaje de error como string
       let errorMessage = "Error desconocido";
       if (err instanceof Error && err.message) {
         errorMessage = err.message;
@@ -118,22 +119,22 @@ export default function page() {
 
       console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
 
-      // Agrego el mensaje a la lista de errores de credenciales/UI
+      // Lo agrego a la lista de errores para mostrar en pantalla
       setErrors((prev) => [...prev, errorMessage]);
 
-      // Determinar si es error de red/timeout
-      const networkTriggers = [
-        "Timeout de 5s",
-        "Cannot POST",
-        "Network Error",
-        "Failed to fetch",
-      ];
-      const isNetworkError = networkTriggers.some((t) =>
-        errorMessage.includes(t)
-      );
+      const isCredError =
+        errorMessage.includes("Credentials") ||
+        errorMessage.includes("Password incorrect");
 
-      // Si ya hice el último reintento y fue un error de red → muestro serverError
-      if (isNetworkError && retryCount === MAX_RETRIES) {
+      // ––– Caso A: Si fue error de credenciales, ya se mostró arriba y paré
+      if (isCredError) {
+        // Ya hice setErrors y setLoading(false) antes de lanzar el error en ese bloque
+        return;
+      }
+
+      // ––– Caso B: Si llegué al último intento (retryCount === MAX_RETRIES),
+      //             muestro serverError y detengo loading
+      if (retryCount === MAX_RETRIES) {
         setServerError(
           "No se pudo establecer comunicación con el servidor. Por favor, intente más tarde."
         );
@@ -141,25 +142,13 @@ export default function page() {
         return;
       }
 
-      // Si aún quedan reintentos y no es error de credenciales → reintento tras 5s
-      if (
-        retryCount < MAX_RETRIES &&
-        !errorMessage.includes("Credentials") &&
-        !errorMessage.includes("Password incorrect")
-      ) {
-        setTimeout(() => {
-          doLogin(email, password, retryCount + 1);
-        }, RETRY_DELAY);
-      } else if (retryCount >= MAX_RETRIES) {
-        // Alcanzado límite de reintentos; detenemos loading
-        console.error(
-          "⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión."
-        );
-        setLoading(false);
-      }
+      // ––– Caso C: Aún quedan reintentos (retryCount < MAX_RETRIES),
+      //             espero 5s y vuelvo a llamar recursivamente
+      setTimeout(() => {
+        doLogin(email, password, retryCount + 1);
+      }, RETRY_DELAY);
     }
   };
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
