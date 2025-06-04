@@ -175,9 +175,6 @@ export default function page() {
     }
   }, [session, status, router]);
 
-  console.log(serverError);
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
-
   return (
     <>
       {status === "loading" && (
