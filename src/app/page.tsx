@@ -32,85 +32,134 @@ export default function page() {
 
   const avatar = email ? email[0].toLocaleUpperCase() : "";
 
-  const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>,
-    retryCount = 0
-  ) => {
+ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setErrors([]);
+    setServerError(null);
+    doLogin(email, password, 0);
+  };
 
-    if (retryCount === 0) {
-      setLoading(true);
-      setErrors([]);
-      setServerError(null);
-    }
+  const doLogin = async (
+    email: string,
+    password: string,
+    retryCount: number
+  ) => {
+    let timerId: NodeJS.Timeout | null = null;
 
     try {
-      const responseNextAuth = await signIn("credentials", {
+      // → a) Promesa signIn(…) de NextAuth
+      const loginPromise = signIn("credentials", {
         email,
         password,
         redirect: false,
         remember: rememberMe,
       });
 
+      // → b) Promesa timeout de 5 segundos
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        timerId = setTimeout(() => {
+          reject(new Error("Timeout de 5s al conectar al servidor"));
+        }, RETRY_DELAY);
+      });
+
+      // → c) Promise.race para que gane quien resuelva primero
+      const responseNextAuth = (await Promise.race([
+        loginPromise,
+        timeoutPromise,
+      ])) as Awaited<ReturnType<typeof signIn>>;
+
+      // Limpio el timeout si la promesa signIn se resolvió primero
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+
+      // → Si NextAuth no devuelve nada
       if (!responseNextAuth) {
         throw new Error("❌ No hay respuesta del servidor");
       }
 
+      // → Si hay un error de autenticación
       if (responseNextAuth.error) {
+        const authError = responseNextAuth.error.trim();
+
+        // 2a) Error de credenciales → mostrar en errors y detener
         if (
-          responseNextAuth.error.includes("Credentials") ||
-          responseNextAuth.error.includes("Password incorrect")
+          authError.includes("Credentials") ||
+          authError.includes("Password incorrect")
         ) {
-          setErrors((prevErrors) => [
-            ...prevErrors,
-            ...(responseNextAuth.error ? [responseNextAuth.error] : []),
-          ]);
+          setErrors((prev) => [...prev, authError]);
           setLoading(false);
           return;
         }
 
-        setErrors((prevErrors) => [
-          ...prevErrors,
-          ...(responseNextAuth.error ? [responseNextAuth.error] : []),
-        ]);
-        throw new Error(`⚠️ Error en autenticación: ${responseNextAuth.error}`);
+        // 2b) Cualquier otro error → agregar a errors y lanzar excepción
+        setErrors((prev) => [...prev, authError]);
+        throw new Error(`⚠️ Error en autenticación: ${authError}`);
       }
 
+      // → Si todo salió bien, redirijo a dashboard
       setLoading(false);
       router.push("/dashboard/main");
-    } catch (error) {
-  let errorMessage = "Error desconocido";
+    } catch (err) {
+      // ← Llego acá si signIn tardó más de 5s (timeout) o hubo otro error
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
 
-  if (error instanceof Error) {
-    errorMessage = error.message;
-  }
+      let errorMessage = "Error desconocido";
+      if (err instanceof Error && err.message) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
 
-  console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
+      console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
 
-  setErrors((prevErrors) => [...prevErrors, errorMessage]);
+      // Agrego el mensaje a la lista de errores de credenciales/UI
+      setErrors((prev) => [...prev, errorMessage]);
 
-  // Agrega esto para ver qué error llega
-  console.log("Error message para serverError:", errorMessage);
+      // Determinar si es error de red/timeout
+      const networkTriggers = [
+        "Timeout de 5s",
+        "Cannot POST",
+        "Network Error",
+        "Failed to fetch",
+      ];
+      const isNetworkError = networkTriggers.some((t) =>
+        errorMessage.includes(t)
+      );
 
-  if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
-    setServerError("No se pudo establecer comunicación con el servidor, reintente.");
-    setLoading(false);
-  }
+      // Si ya hice el último reintento y fue un error de red → muestro serverError
+      if (isNetworkError && retryCount === MAX_RETRIES) {
+        setServerError(
+          "No se pudo establecer comunicación con el servidor. Por favor, intente más tarde."
+        );
+        setLoading(false);
+        return;
+      }
 
-  if (retryCount < MAX_RETRIES) {
-    if (
-      !errorMessage.includes("Credentials") &&
-      !errorMessage.includes("Password incorrect")
-    ) {
-      setTimeout(() => {
-        handleLogin(e, retryCount + 1);
-      }, RETRY_DELAY);
+      // Si aún quedan reintentos y no es error de credenciales → reintento tras 5s
+      if (
+        retryCount < MAX_RETRIES &&
+        !errorMessage.includes("Credentials") &&
+        !errorMessage.includes("Password incorrect")
+      ) {
+        setTimeout(() => {
+          doLogin(email, password, retryCount + 1);
+        }, RETRY_DELAY);
+      } else if (retryCount >= MAX_RETRIES) {
+        // Alcanzado límite de reintentos; detenemos loading
+        console.error(
+          "⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión."
+        );
+        setLoading(false);
+      }
     }
-  } else {
-    console.error("⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión.");
-  }
-}
-}
+  };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -197,7 +246,7 @@ export default function page() {
                 </span>
               </div>
 
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleSubmit}>
                 <div className="inline-flex justify-center items-center pt-7 mt-3 w-full">
                   <div
                     className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
