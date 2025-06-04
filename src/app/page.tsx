@@ -8,8 +8,8 @@ import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
-const MAX_RETRIES = 1;
-const RETRY_DELAY = 3000;
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 10000;
 
 export default function page() {
   const { data: session, status } = useSession();
@@ -32,7 +32,7 @@ export default function page() {
 
   const avatar = email ? email[0].toLocaleUpperCase() : "";
 
- const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrors([]);
@@ -48,7 +48,6 @@ export default function page() {
     let timerId: NodeJS.Timeout | null = null;
 
     try {
-      // ––– a) Promesa signIn de NextAuth (puede tardar indefinidamente)
       const loginPromise = signIn("credentials", {
         email,
         password,
@@ -56,35 +55,29 @@ export default function page() {
         remember: rememberMe,
       });
 
-      // ––– b) Promesa timeout de 5 segundos
       const timeoutPromise = new Promise<never>((_, reject) => {
         timerId = setTimeout(() => {
           reject(new Error("Timeout de 5s al conectar al servidor"));
         }, RETRY_DELAY);
       });
 
-      // ––– c) Promise.race: gana quien responda primero (loginPromise o timeout)
       const responseNextAuth = (await Promise.race([
         loginPromise,
         timeoutPromise,
       ])) as Awaited<ReturnType<typeof signIn>>;
 
-      // Si signIn respondió antes de 5 s, limpio el timeout
       if (timerId) {
         clearTimeout(timerId);
         timerId = null;
       }
 
-      // ––– d) Si NextAuth no devuelve nada
       if (!responseNextAuth) {
         throw new Error("❌ No hay respuesta del servidor");
       }
 
-      // ––– e) Si NextAuth devolvió un error (por ejemplo, credenciales inválidas)
       if (responseNextAuth.error) {
         const authError = responseNextAuth.error.trim();
 
-        // 1) Si es error de credenciales: muestro en “errors” y paro sin reintentos
         const isCredError =
           authError.includes("Credentials") ||
           authError.includes("Password incorrect");
@@ -94,22 +87,18 @@ export default function page() {
           return;
         }
 
-        // 2) Cualquier otro error de NextAuth: lo agrego a “errors” y relanzo
         setErrors((prev) => [...prev, authError]);
         throw new Error(`⚠️ Error en autenticación: ${authError}`);
       }
 
-      // ––– f) Si no hubo error, NextAuth fue exitoso
       setLoading(false);
       router.push("/dashboard/main");
     } catch (err) {
-      // ← Llegamos acá si falló el login (timeout, fallo de conexión, URL inválida, etc.)
       if (timerId) {
         clearTimeout(timerId);
         timerId = null;
       }
 
-      // Determino mensaje de error como string
       let errorMessage = "Error desconocido";
       if (err instanceof Error && err.message) {
         errorMessage = err.message;
@@ -117,23 +106,16 @@ export default function page() {
         errorMessage = err;
       }
 
-      console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
-
-      // Lo agrego a la lista de errores para mostrar en pantalla
       setErrors((prev) => [...prev, errorMessage]);
 
       const isCredError =
         errorMessage.includes("Credentials") ||
         errorMessage.includes("Password incorrect");
 
-      // ––– Caso A: Si fue error de credenciales, ya se mostró arriba y paré
       if (isCredError) {
-        // Ya hice setErrors y setLoading(false) antes de lanzar el error en ese bloque
         return;
       }
 
-      // ––– Caso B: Si llegué al último intento (retryCount === MAX_RETRIES),
-      //             muestro serverError y detengo loading
       if (retryCount === MAX_RETRIES) {
         setServerError(
           "No se pudo establecer comunicación con el servidor. Por favor, intente más tarde."
@@ -142,8 +124,6 @@ export default function page() {
         return;
       }
 
-      // ––– Caso C: Aún quedan reintentos (retryCount < MAX_RETRIES),
-      //             espero 5s y vuelvo a llamar recursivamente
       setTimeout(() => {
         doLogin(email, password, retryCount + 1);
       }, RETRY_DELAY);
@@ -194,9 +174,9 @@ export default function page() {
       router.replace("/dashboard/main");
     }
   }, [session, status, router]);
-  
+
   console.log(serverError);
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
+  console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
 
   return (
     <>
@@ -392,7 +372,7 @@ export default function page() {
                 </div>
 
                 <div
-                  className="w-full text-center"
+                  className="w-full text-center mx-auto max-w-[335px]"
                   style={{ minHeight: "24px" }}
                 >
                   {serverError && (
