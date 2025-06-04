@@ -7,7 +7,7 @@ import SessionAuthProvider from "@/context/SessionAuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TodoFlow",
+  title: "TodoFlow-Development",
   description: "App todo-flow",
 };
 

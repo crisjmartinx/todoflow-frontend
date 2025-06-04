@@ -8,7 +8,7 @@ import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 
-const MAX_RETRIES = 4;
+const MAX_RETRIES = 5;
 const RETRY_DELAY = 10000;
 
 export default function page() {
@@ -32,85 +32,101 @@ export default function page() {
 
   const avatar = email ? email[0].toLocaleUpperCase() : "";
 
-  const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>,
-    retryCount = 0
-  ) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setErrors([]);
+    setServerError(null);
+    doLogin(email, password, 0);
+  };
 
-    if (retryCount === 0) {
-      setLoading(true);
-      setErrors([]);
-      setServerError(null);
-    }
+  const doLogin = async (
+    email: string,
+    password: string,
+    retryCount: number
+  ) => {
+    let timerId: NodeJS.Timeout | null = null;
 
     try {
-      const responseNextAuth = await signIn("credentials", {
+      const loginPromise = signIn("credentials", {
         email,
         password,
         redirect: false,
         remember: rememberMe,
       });
 
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        timerId = setTimeout(() => {
+          reject(new Error("Timeout de 5s al conectar al servidor"));
+        }, RETRY_DELAY);
+      });
+
+      const responseNextAuth = (await Promise.race([
+        loginPromise,
+        timeoutPromise,
+      ])) as Awaited<ReturnType<typeof signIn>>;
+
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+
       if (!responseNextAuth) {
         throw new Error("❌ No hay respuesta del servidor");
       }
 
       if (responseNextAuth.error) {
-        if (
-          responseNextAuth.error.includes("Credentials") ||
-          responseNextAuth.error.includes("Password incorrect")
-        ) {
-          setErrors((prevErrors) => [
-            ...prevErrors,
-            ...(responseNextAuth.error ? [responseNextAuth.error] : []),
-          ]);
+        const authError = responseNextAuth.error.trim();
+
+        const isCredError =
+          authError.includes("Credentials") ||
+          authError.includes("Password incorrect");
+        if (isCredError) {
+          setErrors((prev) => [...prev, authError]);
           setLoading(false);
           return;
         }
 
-        setErrors((prevErrors) => [
-          ...prevErrors,
-          ...(responseNextAuth.error ? [responseNextAuth.error] : []),
-        ]);
-        throw new Error(`⚠️ Error en autenticación: ${responseNextAuth.error}`);
+        setErrors((prev) => [...prev, authError]);
+        throw new Error(`⚠️ Error en autenticación: ${authError}`);
       }
 
       setLoading(false);
       router.push("/dashboard/main");
-    } catch (error) {
+    } catch (err) {
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+
       let errorMessage = "Error desconocido";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
+      if (err instanceof Error && err.message) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
       }
 
-      console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
+      setErrors((prev) => [...prev, errorMessage]);
 
-      setErrors((prevErrors) => [...prevErrors, errorMessage]);
+      const isCredError =
+        errorMessage.includes("Credentials") ||
+        errorMessage.includes("Password incorrect");
 
-      if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
+      if (isCredError) {
+        return;
+      }
+
+      if (retryCount === MAX_RETRIES) {
         setServerError(
-          "No se pudo establecer comunicación con el servidor, reintente."
+          "No se pudo establecer comunicación con el servidor. Por favor, intente más tarde."
         );
-
         setLoading(false);
+        return;
       }
 
-      if (retryCount < MAX_RETRIES) {
-        if (
-          !errorMessage.includes("Credentials") &&
-          !errorMessage.includes("Password incorrect")
-        ) {
-          setTimeout(() => {
-            handleLogin(e, retryCount + 1);
-          }, RETRY_DELAY);
-        }
-      } else {
-        console.error(
-          "⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión."
-        );
-      }
+      setTimeout(() => {
+        doLogin(email, password, retryCount + 1);
+      }, RETRY_DELAY);
     }
   };
 
@@ -196,7 +212,7 @@ export default function page() {
                 </span>
               </div>
 
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleSubmit}>
                 <div className="inline-flex justify-center items-center pt-7 mt-3 w-full">
                   <div
                     className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
@@ -353,7 +369,7 @@ export default function page() {
                 </div>
 
                 <div
-                  className="w-full text-center"
+                  className="w-full text-center mx-auto max-w-[335px]"
                   style={{ minHeight: "24px" }}
                 >
                   {serverError && (
