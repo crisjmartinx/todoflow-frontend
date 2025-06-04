@@ -33,88 +33,84 @@ export default function page() {
   const avatar = email ? email[0].toLocaleUpperCase() : "";
 
   const handleLogin = async (
-  e: React.FormEvent<HTMLFormElement>,
-  retryCount = 0
-) => {
-  e.preventDefault();
+    e: React.FormEvent<HTMLFormElement>,
+    retryCount = 0
+  ) => {
+    e.preventDefault();
 
-  if (retryCount === 0) {
-    setLoading(true);
-    setErrors([]);
-    setServerError(null);
-  }
-
-  try {
-    const responseNextAuth = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-      remember: rememberMe,
-    });
-
-    if (!responseNextAuth) {
-      throw new Error("❌ No hay respuesta del servidor");
+    if (retryCount === 0) {
+      setLoading(true);
+      setErrors([]);
+      setServerError(null);
     }
 
-    if (responseNextAuth.error) {
-      const authError = responseNextAuth.error?.trim();
+    try {
+      const responseNextAuth = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        remember: rememberMe,
+      });
 
-      if (
-        authError &&
-        (authError.includes("Credentials") || authError.includes("Password incorrect"))
-      ) {
-        setErrors((prevErrors) => [...prevErrors, authError]);
-        setLoading(false);
-        return;
+      if (!responseNextAuth) {
+        throw new Error("❌ No hay respuesta del servidor");
       }
 
-      if (authError) {
-        setErrors((prevErrors) => [...prevErrors, authError]);
-        throw new Error(`⚠️ Error en autenticación: ${authError}`);
+      if (responseNextAuth.error) {
+        if (
+          responseNextAuth.error.includes("Credentials") ||
+          responseNextAuth.error.includes("Password incorrect")
+        ) {
+          setErrors((prevErrors) => [
+            ...prevErrors,
+            ...(responseNextAuth.error ? [responseNextAuth.error] : []),
+          ]);
+          setLoading(false);
+          return;
+        }
+
+        setErrors((prevErrors) => [
+          ...prevErrors,
+          ...(responseNextAuth.error ? [responseNextAuth.error] : []),
+        ]);
+        throw new Error(`⚠️ Error en autenticación: ${responseNextAuth.error}`);
       }
-    }
 
-    setLoading(false);
-    router.push("/dashboard/main");
-  } catch (error) {
-    let errorMessage = "Error desconocido";
-
-    if (error instanceof Error) {
-      errorMessage = error.message;
-    } else if (typeof error === "string") {
-      errorMessage = error;
-    }
-
-    console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
-
-    if (errorMessage) {
-      setErrors((prevErrors) => [...prevErrors, errorMessage]);
-    }
-
-    if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
-      setServerError(
-        "No se pudo establecer comunicación con el servidor, reintente."
-      );
       setLoading(false);
-    }
+      router.push("/dashboard/main");
+    } catch (error) {
+  let errorMessage = "Error desconocido";
 
-    if (retryCount < MAX_RETRIES) {
-      if (
-        !errorMessage.includes("Credentials") &&
-        !errorMessage.includes("Password incorrect")
-      ) {
-        setTimeout(() => {
-          handleLogin(e, retryCount + 1);
-        }, RETRY_DELAY);
-      }
-    } else {
-      console.error(
-        "⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión."
-      );
-    }
+  if (error instanceof Error) {
+    errorMessage = error.message;
   }
-};
 
+  console.error(`❌ Intento ${retryCount + 1} fallido: ${errorMessage}`);
+
+  setErrors((prevErrors) => [...prevErrors, errorMessage]);
+
+  // Agrega esto para ver qué error llega
+  console.log("Error message para serverError:", errorMessage);
+
+  if (errorMessage.includes("Cannot POST") && retryCount === MAX_RETRIES) {
+    setServerError("No se pudo establecer comunicación con el servidor, reintente.");
+    setLoading(false);
+  }
+
+  if (retryCount < MAX_RETRIES) {
+    if (
+      !errorMessage.includes("Credentials") &&
+      !errorMessage.includes("Password incorrect")
+    ) {
+      setTimeout(() => {
+        handleLogin(e, retryCount + 1);
+      }, RETRY_DELAY);
+    }
+  } else {
+    console.error("⛔ Se alcanzó el límite de intentos. No se pudo iniciar sesión.");
+  }
+}
+}
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
