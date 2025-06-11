@@ -9,9 +9,14 @@ import { Bold, Italic } from "lucide-react";
 interface EditorProps {
   content: string;
   handleInput: (html: string) => void;
+  activateIA?: boolean;
 }
 
-export const Editor: React.FC<EditorProps> = ({ content, handleInput }) => {
+export const Editor: React.FC<EditorProps> = ({
+  content,
+  handleInput,
+  activateIA,
+}) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [showToolbar, setShowToolbar] = useState(false);
   const [openCollapse, setOpenCollapse] = useState<string | null>(null);
@@ -20,14 +25,28 @@ export const Editor: React.FC<EditorProps> = ({ content, handleInput }) => {
   const [currentColor, setCurrentColor] = useState<string | null>(null);
   const [currentBgColor, setCurrentBgColor] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML !== content) {
-      editorRef.current.innerHTML = content;
-    }
-  }, [content]);
-
   const execCommand = (command: string, value?: string) => {
-    document.execCommand(command, false, value);
+    switch (command) {
+      case "customStyle":
+        insertStyledElement("span", {
+          backgroundColor: value || "#ffeb3b",
+          padding: "0 4px",
+          borderRadius: "2px",
+        });
+        break;
+      case "customColor":
+        insertStyledElement("span", {
+          color: value || "#000000",
+        });
+        break;
+      case "customBackground":
+        insertStyledElement("span", {
+          backgroundColor: value || "#ffffff",
+        });
+        break;
+      default:
+        document.execCommand(command, false, value);
+    }
     handleInput(editorRef.current?.innerHTML || "");
     editorRef.current?.focus();
   };
@@ -90,6 +109,45 @@ export const Editor: React.FC<EditorProps> = ({ content, handleInput }) => {
     selection.addRange(newRange);
   };
 
+  const insertStyledElement = (
+    tagName: string,
+    styles: Partial<CSSStyleDeclaration>
+  ) => {
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    const element = document.createElement(tagName);
+
+    Object.assign(element.style, styles);
+
+    if (!range.collapsed) {
+      element.appendChild(range.extractContents());
+      range.insertNode(element);
+    } else {
+      element.innerHTML = "&nbsp;";
+      range.insertNode(element);
+
+      const newRange = document.createRange();
+      newRange.setStart(element, 0);
+      newRange.setEnd(element, 0);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+    }
+
+    handleInput(editorRef.current?.innerHTML || "");
+  };
+
+  useEffect(() => {
+    if (editorRef.current) {
+      if (activateIA) {
+        editorRef.current.innerHTML = content;
+      } else if (editorRef.current.innerHTML !== content) {
+        editorRef.current.innerHTML = content;
+      }
+    }
+  }, [content, activateIA]);
+
   useEffect(() => {
     document.addEventListener("mouseup", checkSelection);
     document.addEventListener("keyup", checkSelection);
@@ -146,7 +204,9 @@ export const Editor: React.FC<EditorProps> = ({ content, handleInput }) => {
 
       <div
         ref={editorRef}
-        className="editor h-full border border-gray-300 p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto"
+        className={`editor h-full border text-black border-gray-300 p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto ${
+          activateIA ? "intelligence-container" : ""
+        }`}
         contentEditable
         onInput={onInput}
         onMouseDown={(e) => {

@@ -4,10 +4,10 @@ import React from "react";
 
 export default function page() {
   return (
-    <div className="container-items bg-[#292929] h-screen">
+    <div className="container-items h-screen">
       <div className="max-w-[1600px] mx-auto">
         <div className="pt-[8rem] px-5">
-          <h2 className="text-white font-semibold text-3xl text-center">
+          <h2 className="text-black font-semibold text-4xl text-center">
             Próximamente!
           </h2>
         </div>
