@@ -47,10 +47,8 @@ export const NewNote: React.FC<NewNoteProps> = ({
 
   const [loading, setLoading] = useState(true);
   const [animatedContent, setAnimatedContent] = useState("");
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const [activateIA, setActivateIA] = useState(false);
-
   const [prompt, setPrompt] = useState<string>("");
   const [response, setResponse] = useState("");
 
@@ -126,7 +124,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
   };
 
   const handleInput = (content: string) => {
-    if (!isAnimating) {
+    if (!activateIA) {
       setFormData((prev) => ({
         ...prev,
         content,
@@ -134,86 +132,54 @@ export const NewNote: React.FC<NewNoteProps> = ({
     }
   };
 
-  // const handleGenerate = async () => {
-  //   if (!formData.content?.trim()) return;
+  const handleGenerate = async () => {
+    if (!formData.content?.trim()) return;
 
-  //   setActivateIA(true);
-  //   setIsAnimating(true);
+    setActivateIA(true);
 
-  //   try {
-  //     const resumen = await getGroqResponse(
-  //       `Resumí este texto de forma breve y clara:\n\n${formData.content}`
-  //     );
+    try {
+      const resumen = await getGroqResponse(
+        `Resumí este texto de forma breve y clara:\n\n${formData.content}`
+      );
 
-  //     setAnimatedContent("");
+      setAnimatedContent("");
 
-  //     const palabras = resumen.split(" ").map((palabra, i, arr) => {
-  //       return i < arr.length - 1 ? palabra + " " : palabra;
-  //     });
+      const palabras = resumen.split(" ");
+      let contenidoHTML = palabras
+        .map(
+          (palabra, index) =>
+            `<span class="fade-in-word" data-index="${index}">${palabra}</span>${
+              index < palabras.length - 1 ? " " : ""
+            }`
+        )
+        .join("");
 
-  //     let indexPalabra = 0;
-  //     const intervaloEntrePalabras = 300;
+      setAnimatedContent(contenidoHTML);
 
-  //     const interval = setInterval(() => {
-  //       const palabraActual = palabras[indexPalabra];
+      let index = 0;
+      const interval = setInterval(() => {
+        const elemento = document.querySelector(`[data-index="${index}"]`);
+        if (elemento) {
+          elemento.classList.add("active");
+        }
 
-  //       const wrappedWord = `<span class="fade-in-char">${palabraActual}</span>`;
-
-  //       setAnimatedContent((prev) => prev + wrappedWord);
-
-  //       indexPalabra++;
-  //       if (indexPalabra >= palabras.length) {
-  //         clearInterval(interval);
-
-  //         setFormData((prev) => ({
-  //           ...prev,
-  //           content: resumen,
-  //         }));
-
-  //         setIsAnimating(false);
-  //         setActivateIA(false);
-  //       }
-  //     }, intervaloEntrePalabras);
-  //   } catch (error) {
-  //     console.error("Error al generar resumen:", error);
-  //     setIsAnimating(false);
-  //     setActivateIA(false);
-  //   }
-  // };
-
-  // const handleGenerate = async () => {
-  //   if (!formData.content?.trim()) return;
-
-  //   setActivateIA(true);
-  //   setIsAnimating(true);
-
-  //   try {
-  //     const resumen = await getGroqResponse(
-  //       `Resumí este texto de forma breve y clara:\n\n${formData.content}`
-  //     );
-
-  //     setAnimatedContent("");
-
-  //     let index = 0;
-  //     const interval = setInterval(() => {
-  //       setAnimatedContent((prev) => prev + resumen.charAt(index));
-  //       index++;
-  //       if (index >= resumen.length) {
-  //         clearInterval(interval);
-  //         setFormData((prev) => ({
-  //           ...prev,
-  //           content: resumen,
-  //         }));
-  //         setIsAnimating(false);
-  //         setActivateIA(false);
-  //       }
-  //     }, 10);
-  //   } catch (error) {
-  //     console.error("Error al generar resumen:", error);
-  //     setIsAnimating(false);
-  //     setActivateIA(false);
-  //   }
-  // };
+        index++;
+        if (index >= palabras.length) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setFormData((prev) => ({
+              ...prev,
+              content: resumen,
+            }));
+            setActivateIA(false);
+          }, 500);
+        }
+      }, 50);
+    } catch (error) {
+      console.error("Error al generar resumen:", error);
+      setActivateIA(false);
+    }
+  };
 
   useNoteAutoSave({
     formData,
@@ -228,8 +194,6 @@ export const NewNote: React.FC<NewNoteProps> = ({
       ref={modalRef}
       className={`container-modal bg-[#00000000] translate-y-[1200px] backdrop-blur-[100px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center p-[0.3rem] top-[12.2rem] md:top-[9.6rem]`}
     >
-      {activateIA && <div className={"ia-generate"}></div>}
-
       {loadingSave && <div className="loader"></div>}
       <form className="flex flex-col bg-[#FFF] p-6 rounded-[5px] w-full h-full">
         <input
@@ -356,18 +320,15 @@ export const NewNote: React.FC<NewNoteProps> = ({
             >
               <Sparkles color="#fff" size={15} />
 
-              {activateIA ? <span>Generando...</span> : <span>Resumen</span>}
+              {activateIA ? <span>Generando...</span> : <span>Resumir</span>}
             </button> */}
           </div>
         </div>
-        <div
-          className={`flex-1 pt-2 relative group overflow-auto ${
-            activateIA ? "intelligence-container" : ""
-          }`}
-        >
+        <div className={`flex-1 pt-2 relative group overflow-auto`}>
           <Editor
+            activateIA={activateIA}
             handleInput={handleInput}
-            content={isAnimating ? animatedContent : formData.content}
+            content={activateIA ? animatedContent : formData.content}
           />
         </div>
       </form>
