@@ -192,7 +192,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
   return (
     <div
       ref={modalRef}
-      className={`container-modal bg-[#00000000] translate-y-[1200px] backdrop-blur-[100px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center p-[0.3rem] top-[12.2rem] md:top-[9.6rem]`}
+      className={`container-modal bg-[#00000000] translate-y-[1200px] backdrop-blur-[100px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center top-[12.2rem] md:top-[9.6rem]`}
     >
       {loadingSave && <div className="loader"></div>}
       <form className="flex flex-col bg-[#FFF] p-6 rounded-[5px] w-full h-full">
@@ -308,20 +308,17 @@ export const NewNote: React.FC<NewNoteProps> = ({
         </div>
 
         <div className="pt-5 mb-2">
-          <div className="flex justify-between">
-            <span className="text-black font-semibold text-sm select-none">
-              Nota
-            </span>
-
-            {/* <button
+          <div className="flex justify-end items-center">
+            <button
               type="button"
-              className="flex items-center justify-center gap-2 text-white bg-black font-extralight text-[0.8rem] px-3 py-2 rounded-lg transition"
+              className={`flex items-center justify-center gap-2 text-white bg-black font-extralight text-[0.8rem] px-3 py-2 rounded-lg transition`}
               onClick={handleGenerate}
+              disabled={true}
+              // disabled={activateIA || loadingSave}
             >
               <Sparkles color="#fff" size={15} />
-
-              {activateIA ? <span>Generando...</span> : <span>Resumir</span>}
-            </button> */}
+              {activateIA ? <span>Resumiendo...</span> : <span>Resumir</span>}
+            </button>
           </div>
         </div>
         <div className={`flex-1 pt-2 relative group overflow-auto`}>
