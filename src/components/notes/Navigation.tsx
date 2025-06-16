@@ -48,7 +48,19 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
     <>
       <nav className="navigator fixed top-[4.6rem] bg-transparent backdrop-blur-2xl shadow-md z-10 w-full py-4 px-5 select-none">
         <div className="flex justify-between items-center flex-wrap flex-col md:flex-row max-w-[1560px] mx-auto">
-          <h3 className="text-black text-[2rem] font-bold w-full md:w-auto mb-1 md:mb-0 whitespace-nowrap overflow-hidden text-ellipsis">
+          <h3
+            className="text-black text-[2rem] font-bold w-full md:w-auto mb-1 md:mb-0 whitespace-nowrap overflow-hidden text-ellipsis"
+            style={{
+              opacity: addNoteModalOpen ? 0 : 1,
+              transition:
+                "opacity 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+              transform: addNoteModalOpen
+                ? "translateY(-10px)"
+                : "translateY(0)",
+              transitionDelay: addNoteModalOpen ? "0.1s" : "0s",
+              transitionProperty: "opacity, transform",
+            }}
+          >
             Notas
           </h3>
 
