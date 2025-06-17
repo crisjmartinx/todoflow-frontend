@@ -66,7 +66,7 @@ export default function page() {
                 <Card key={list.id} index={index} {...list} />
               ))}
             </div>
-            <div className="h-[1.5px] bg-gray-300 w-auto rounded-xl my-2 mx-1"></div>
+            <div className="h-[1.5px] bg-light-dark w-auto rounded-xl my-2 mx-1"></div>
           </div>
         </section>
 
@@ -76,7 +76,7 @@ export default function page() {
             <div className="card-main-banner reflection rounded-xl border border-gray-200 mb-20 hover:transform hover:none">
               <div className="h-72 bg-[#00000069]">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <Lock size={60} color="#3d3d3d" />
+                  <Lock className="text-light-dark" size={60} />
                 </div>
               </div>
             </div>

@@ -47,8 +47,8 @@ const Card: React.FC<Props> = ({
       className={`card-main reflection rounded-xl border border-gray-200 z-20 ${
         isLocked ? "hover:transform hover:none" : ""
       }`}
-      style={{ animationDelay: `${index * 0.07}s` }}
       key={id}
+      style={{ animationDelay: `${index * 0.07}s` }}
     >
       <Link
         className="card"
@@ -56,47 +56,37 @@ const Card: React.FC<Props> = ({
         onClick={isLocked ? handleLockClick : undefined}
       >
         <div
-          className={`bg-white border-[3px] p-5 rounded-xl flex flex-col justify-between h-full`}
+          className={`bg-light border-[3px] p-5 rounded-xl flex flex-col justify-between h-full`}
           style={{
             borderColor: isLocked ? "#00000069" : color,
             background: isLocked ? "#00000069" : "",
           }}
         >
           {isLocked && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <Lock
-                size={60}
-                color="#3d3d3d"
-                className={`${shakeLock ? "shake" : ""}`}
-              />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-light-dark">
+              <Lock size={60} className={`${shakeLock ? "shake" : ""}`} />
             </div>
           )}
           <div className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xl font-medium text-black select-none whitespace-nowrap overflow-hidden text-ellipsis">
+            <span className="text-xl font-medium text-light-dark select-none whitespace-nowrap overflow-hidden text-ellipsis">
               {name}
             </span>
-            <UserIcon size={22} className=" text-[#3d3d3d] ml-5" />
+            <UserIcon size={22} className="text-light-dark ml-5" />
           </div>
 
           <div className="w-full">
             <div
+              className="h-[3px] max-w-32 my-5 rounded-xl"
               style={{
                 backgroundColor: color.slice(0, -2),
                 opacity: isLocked ? 0 : 1,
               }}
-              className="h-[3px] max-w-32 my-5 rounded-xl"
             ></div>
 
             <div>
-              <span className="block text-[18px] font-semibold text-black select-none py-1 whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="block text-[18px] font-semibold text-light-dark select-none py-1 whitespace-nowrap overflow-hidden text-ellipsis">
                 {loading ? (
-                  <div
-                    className="spinner-save-data-button inline-block"
-                    style={{
-                      border: "2px solid black",
-                      borderRight: " 2px solid transparent",
-                    }}
-                  ></div>
+                  <div className="spinner-save-data-button inline-block border-2 border-black border-r-transparent"></div>
                 ) : (
                   <span className="font-medium">{amount}</span>
                 )}
