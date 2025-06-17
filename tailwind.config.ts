@@ -12,7 +12,7 @@ const config: Config = {
         light: {
           DEFAULT: "#FFFFFF",
           light: "#EDEDED",
-          dark: "#3D3D3D",
+          dark: "#2E2E2E",
         },
         dark: {
           DEFAULT: "#111827",

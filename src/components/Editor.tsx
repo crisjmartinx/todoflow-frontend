@@ -160,7 +160,7 @@ export const Editor: React.FC<EditorProps> = ({
   return (
     <>
       {showToolbar && (
-        <div className="fixed flex items-baseline justify-start gap-8 bg-black text-white top-32 rounded-md py-1 px-6 select-none">
+        <div className="fixed flex items-baseline justify-start gap-8 bg-light-dark text-light top-32 rounded-md py-1 px-6 select-none">
           <TextFormatSelector
             execCommand={execCommand}
             currentTag={currentTag}
@@ -204,7 +204,7 @@ export const Editor: React.FC<EditorProps> = ({
 
       <div
         ref={editorRef}
-        className={`editor h-full border text-black border-gray-100 p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto ${
+        className={`editor h-full border text-light-dark border-light-light p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto ${
           activateIA ? "intelligence-container" : ""
         }`}
         contentEditable
