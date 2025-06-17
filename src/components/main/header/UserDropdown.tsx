@@ -56,9 +56,9 @@ const UserDropdown = ({ handleLogout }: Props) => {
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className=" p-2 rounded-full border-[1px] border-[black] hover:bg-gray-200 transition"
+        className="p-2 rounded-full border-[1px] border-light-dark hover:bg-gray-200 transition"
       >
-        <User color="black" size={17} />
+        <User className="text-light-dark" size={17} />
       </button>
 
       {isOpen && (

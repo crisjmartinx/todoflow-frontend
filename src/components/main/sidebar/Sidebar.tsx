@@ -53,7 +53,7 @@ export default function Sidebar() {
 
   return (
     <aside className="overflow-hidden fixed top-[4.6rem] h-full sidebar z-[60]">
-      <div className=" h-full bg-[#ededed]">
+      <div className=" h-full bg-light-light">
         <nav className="pt-4 px-2 md:px-4">
           {menuItems.map((item) => (
             <SidebarMenuItems key={item.path} {...item} />

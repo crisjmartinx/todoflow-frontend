@@ -390,8 +390,6 @@ body::-webkit-scrollbar {
 .spinner-save-data-button {
   width: 15px;
   height: 15px;
-  border: 3px solid #fff;
-  border-left-color: black;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
