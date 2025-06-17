@@ -49,7 +49,7 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
       <nav className="navigator fixed top-[4.6rem] bg-transparent backdrop-blur-2xl shadow-md z-10 w-full py-4 px-5 select-none">
         <div className="flex justify-between items-center flex-wrap flex-col md:flex-row max-w-[1560px] mx-auto">
           <h3
-            className="text-black text-[2rem] font-bold w-full md:w-auto mb-1 md:mb-0 whitespace-nowrap overflow-hidden text-ellipsis"
+            className="text-light-dark text-[2rem] font-bold w-full md:w-auto mb-1 md:mb-0 whitespace-nowrap overflow-hidden text-ellipsis"
             style={{
               opacity: addNoteModalOpen ? 0 : 1,
               transition:
@@ -67,24 +67,24 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
           <div
             className={`flex items-center border gap-2 rounded-lg ml-0 md:ml-auto mr-0 md:mr-5 ${
               addNoteModalOpen ? "hidden" : "p-2 mb-4"
-            } md:mb-0 w-full md:w-auto bg-[#fff]`}
+            } md:mb-0 w-full md:w-auto bg-light`}
           >
             {!addNoteModalOpen && (
               <>
-                <Search size={17} className="text-gray-500" />
+                <Search size={17} className="text-light-dark" />
 
                 <input
                   type="text"
                   placeholder="Buscar notas..."
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
-                  className="focus:outline-none border-[#dbdbdb] bg-[#fff] text-[13px] box-border text-black w-full md:w-64 whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="focus:outline-none bg-light text-[13px] box-border text-light-dark w-full md:w-64 whitespace-nowrap overflow-hidden text-ellipsis"
                 />
 
                 {search && (
                   <X
                     size={17}
-                    className="text-gray-500 cursor-pointer"
+                    className="text-light-dark cursor-pointer"
                     onClick={() => setSearch("")}
                   />
                 )}
@@ -93,7 +93,7 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
           </div>
 
           <div
-            className="flex items-center justify-center gap-2 text-white bg-black font-extralight text-sx px-3 py-2 rounded-lg transition"
+            className="flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-sx px-3 py-2 rounded-lg transition"
             style={{
               width:
                 windowWidth < 768 ? "100%" : addNoteModalOpen ? "6rem" : "9rem",
@@ -118,11 +118,11 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
                 <div className="whitespace-nowrap overflow-hidden leading-none font-light">
                   {addNoteModalOpen ? (
                     <div className="slide-up" key="ready">
-                      <span className="text-sm">Listo</span>
+                      <span className="text-sm text-light">Listo</span>
                     </div>
                   ) : (
                     <div className="slide-up" key="add">
-                      <span className="text-sm">Agregar nota</span>
+                      <span className="text-sm text-light">Agregar nota</span>
                     </div>
                   )}
                 </div>

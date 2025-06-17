@@ -179,17 +179,17 @@ export default function page() {
     <>
       {status === "loading" && (
         <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-gray-900"></div>
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-light-dark"></div>
         </div>
       )}
 
       {status === "unauthenticated" && (
-        <div className=" bg-[#FAFAFA] h-screen w-full flex items-center">
+        <div className=" bg-light-light h-screen w-full flex items-center">
           <div className="mx-auto p-3 w-[34rem]">
             <div className="h-auto  ">
-              <div className="bg-black w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
+              <div className="bg-light-dark w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
                 <span
-                  className="text-white text-3xl font-medium"
+                  className="text-light text-3xl font-medium"
                   style={{
                     transform:
                       avatar.length > 0
@@ -204,7 +204,7 @@ export default function page() {
               </div>
 
               <div className="text-center mt-2 pt-9">
-                <h5 className="font-semibold text-3xl text-black">
+                <h5 className="font-semibold text-3xl text-light-dark">
                   Bienvenido
                 </h5>
                 <span className="font-extralight text-lg block pt-2 text-gray-500">
@@ -351,7 +351,7 @@ export default function page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-[#000] text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
+                    className="bg-light-dark text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
                     style={{
                       flex: "0 1 335px",
                       boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28)",
