@@ -42,7 +42,7 @@ export const AnimatedButton = ({
       tabIndex={0}
       aria-label={text}
     >
-      {loading ? (
+      {!loading ? (
         <>
           {icon && (
             <div
