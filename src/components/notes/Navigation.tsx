@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { NewNote } from "@/app/dashboard/notes/NewNote";
 import { useKeyPress } from "@/hooks/useKeyPress";
-import { AnimatedButton } from "../ui/AnimatedButton";
+import { AnimatedButton } from "../ui/buttons/AnimatedButton";
 
 import { Plus, Search, X } from "lucide-react";
 

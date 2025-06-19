@@ -2,15 +2,18 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
+import { Editor } from "@/components/Editor";
+import { ButtonAI } from "@/components/ui/buttons/ButtonAI";
+
 import { TagCategory, TagItem } from "@/types";
 
-import { ChevronLeft, Sparkles, Tags } from "lucide-react";
-import { Editor } from "@/components/Editor";
 import { createNote, updateNote } from "@/actions/note-actions";
-import { useNoteAutoSave } from "@/hooks/useAutoSave";
 import { getTags } from "@/actions/tag-action";
 import { getGroqResponse } from "@/services/groqService";
-import { AnimatedButton } from "@/components/ui/AnimatedButton";
+
+import { useNoteAutoSave } from "@/hooks/useAutoSave";
+
+import { ChevronLeft, Tags } from "lucide-react";
 
 interface NewNoteProps {
   isOpen: boolean;
@@ -230,7 +233,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
             </span>
 
             <div
-              className="absolute left-[1.3rem] mt-8 rounded-r-lg rounded-bl-lg z-10 border border-gray-200"
+              className="absolute left-[1rem] mt-8 rounded-r-lg rounded-bl-lg z-10 border border-gray-200"
               style={{
                 width: showCategories ? "calc(100% - 63px)" : "0px",
                 overflow: "hidden",
@@ -310,13 +313,12 @@ export const NewNote: React.FC<NewNoteProps> = ({
 
         <div className="pt-5 mb-2">
           <div className="flex justify-end items-center">
-            <AnimatedButton
+            <ButtonAI
               text="Resumir"
               openText="Resumiendo..."
               isOpen={activateIA}
               onClick={handleGenerate}
               loading={activateIA || loadingSave}
-              icon={<Sparkles className="text-light" size={15} />}
             />
           </div>
         </div>
