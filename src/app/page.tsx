@@ -351,7 +351,7 @@ export default function page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-light-dark text-lg font-light p-[12px] rounded-[14px] text-[#FFF]"
+                    className="bg-light-dark text-lg font-light p-[12px] rounded-[14px] text-[#FFF] hover:bg-light-dark_hover transition-colors duration-300"
                     style={{
                       flex: "0 1 335px",
                       boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28)",
@@ -360,7 +360,7 @@ export default function page() {
                     {loading ? (
                       <div className="flex justify-center items-center">
                         <span className="mr-3">Accediendo</span>
-                        <div className="spinner-save-data-button"></div>
+                        <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-white border-l-transparent"></div>
                       </div>
                     ) : (
                       <span>Acceder</span>

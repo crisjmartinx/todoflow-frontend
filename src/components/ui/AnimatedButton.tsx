@@ -30,17 +30,6 @@ export const AnimatedButton = ({
       : "auto";
 
   return (
-    // <div
-    //   className="flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-sx px-3 py-2 rounded-lg transition hover:bg-light-dark_hover"
-    //   style={{
-    //     width,
-    //     transition: "width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-    //   }}
-    //   onClick={onClick}
-    //   role="button"
-    //   tabIndex={0}
-    //   aria-label={text}
-    // >
     <div
       className="flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-sx px-3 py-2 rounded-lg hover:bg-light-dark_hover"
       style={{
@@ -53,7 +42,7 @@ export const AnimatedButton = ({
       tabIndex={0}
       aria-label={text}
     >
-      {!loading ? (
+      {loading ? (
         <>
           {icon && (
             <div
@@ -75,7 +64,7 @@ export const AnimatedButton = ({
         </>
       ) : (
         <div className="py-[0.15rem]">
-          <div className="spinner-save-data-button"></div>
+          <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-white border-l-transparent"></div>
         </div>
       )}
     </div>
