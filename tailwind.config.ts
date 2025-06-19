@@ -13,6 +13,7 @@ const config: Config = {
           DEFAULT: "#FFFFFF",
           light: "#EDEDED",
           dark: "#2E2E2E",
+          dark_hover: "#2E2E2EED",
         },
         dark: {
           DEFAULT: "#111827",

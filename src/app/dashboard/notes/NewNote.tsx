@@ -10,6 +10,7 @@ import { createNote, updateNote } from "@/actions/note-actions";
 import { useNoteAutoSave } from "@/hooks/useAutoSave";
 import { getTags } from "@/actions/tag-action";
 import { getGroqResponse } from "@/services/groqService";
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
 
 interface NewNoteProps {
   isOpen: boolean;
@@ -139,7 +140,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
 
     try {
       const resumen = await getGroqResponse(
-        `Resumí este texto de forma breve y clara:\n\n${formData.content}`
+        `Resumí este texto de forma breve, clara y sin agregar texto que diga la accion que realizaste, en este caso resumir.:\n\n${formData.content}`
       );
 
       setAnimatedContent("");
@@ -309,16 +310,14 @@ export const NewNote: React.FC<NewNoteProps> = ({
 
         <div className="pt-5 mb-2">
           <div className="flex justify-end items-center">
-            <button
-              type="button"
-              className={`flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-[0.8rem] px-3 py-2 rounded-lg transition`}
+            <AnimatedButton
+              text="Resumir"
+              openText="Resumiendo..."
+              isOpen={activateIA}
               onClick={handleGenerate}
-              disabled={true}
-              // disabled={activateIA || loadingSave}
-            >
-              <Sparkles className="text-light" size={15} />
-              {activateIA ? <span>Resumiendo...</span> : <span>Resumir</span>}
-            </button>
+              loading={activateIA || loadingSave}
+              icon={<Sparkles className="text-light" size={15} />}
+            />
           </div>
         </div>
         <div className={`flex-1 pt-2 relative group overflow-auto`}>

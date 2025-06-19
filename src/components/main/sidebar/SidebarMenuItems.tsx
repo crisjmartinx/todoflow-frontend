@@ -19,7 +19,11 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
       <Link
         href={path}
         className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
-            ${isMatched ? "bg-light-dark" : ""} 
+            ${
+              isMatched
+                ? "bg-light-dark hover:bg-light-dark_hover duration-300"
+                : ""
+            } 
               rounded-lg mb-3`}
         style={{
           boxShadow: isMatched ? "0 15px 25px 1px rgba(0, 0, 0, 0.20)" : "none",
