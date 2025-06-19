@@ -1,19 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { NewNote } from "@/app/dashboard/notes/NewNote";
 import { useKeyPress } from "@/hooks/useKeyPress";
+import { AnimatedButton } from "../ui/AnimatedButton";
+
 import { Plus, Search, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
   const router = useRouter();
-  const [search, setSearch] = useState(searchQuery);
 
+  const [search, setSearch] = useState(searchQuery);
   const [addNoteModalOpen, setAddNoteModalOpen] = useState<boolean>(false);
   const [loadingSave, setLoadingSave] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleToggleAddNoteModal = () => {
@@ -92,47 +95,17 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
             )}
           </div>
 
-          <div
-            className="flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-sx px-3 py-2 rounded-lg transition"
-            style={{
-              width:
-                windowWidth < 768 ? "100%" : addNoteModalOpen ? "6rem" : "9rem",
-              transition: "width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-            }}
+          <AnimatedButton
+            text="Agregar nota"
+            openText="Listo"
+            isOpen={addNoteModalOpen}
             onClick={handleToggleAddNoteModal}
-            role="button"
-            tabIndex={0}
-            aria-label="Agregar nota"
-          >
-            {!loadingSave ? (
-              <>
-                <div>
-                  <Plus
-                    size={17}
-                    className={`transition duration-300 ${
-                      addNoteModalOpen ? "transform rotate-45" : ""
-                    }`}
-                  />
-                </div>
-
-                <div className="whitespace-nowrap overflow-hidden leading-none font-light">
-                  {addNoteModalOpen ? (
-                    <div className="slide-up" key="ready">
-                      <span className="text-sm text-light">Listo</span>
-                    </div>
-                  ) : (
-                    <div className="slide-up" key="add">
-                      <span className="text-sm text-light">Agregar nota</span>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <div className="py-[0.15rem]">
-                <div className="spinner-save-data-button"></div>
-              </div>
-            )}
-          </div>
+            loading={loadingSave}
+            windowWidth={window.innerWidth}
+            icon={<Plus size={17} />}
+            smallWidth={6}
+            largeWidth={9}
+          />
         </div>
       </nav>
 
