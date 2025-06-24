@@ -26,11 +26,13 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
             } 
               rounded-lg mb-3`}
         style={{
-          boxShadow: isMatched ? "0 15px 25px 1px rgba(0, 0, 0, 0.20)" : "none",
+          boxShadow: isMatched
+            ? "0 8px 25px 0px var(--secondary-light)"
+            : "none",
         }}
       >
         <div
-          className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-30 invert"}`}
+          className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-50 invert"}`}
           aria-label={name}
         >
           {icon}
@@ -39,7 +41,7 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
           className={`${
             isMatched
               ? "text-[var(--text-secondary)]"
-              : "text-[--text-primary] opacity-30"
+              : "text-[--text-primary] opacity-50"
           } font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
         >
           {name}

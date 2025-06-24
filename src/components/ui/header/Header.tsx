@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <header
-      className="bg-[var(--primary)] py-5 px-5 md:px-5 overflow-hidden fixed w-full top-0 z-[200]"
+      className="bg-[var(--primary)] py-5 px-5 md:px-5 overflow-hidden fixed w-full top-0 z-[200] border-b-[var(--secondary-light)] border-b-[0.5px]"
       id="header"
     >
       <div className="flex justify-between items-center">

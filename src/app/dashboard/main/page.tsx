@@ -77,7 +77,7 @@ export default function page() {
             <div className="card-main-banner reflection rounded-xl border border-[var(--secondary-light)] mb-20 hover:transform hover:none">
               <div className="h-72 bg-[var(--primary-light)] hover:bg-[var(--hover-bg)]">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <Lock className="text-[var(--secondary-light)]" size={40} />
+                  <Lock className="text-[var(--secondary)]" size={40} />
                 </div>
               </div>
             </div>

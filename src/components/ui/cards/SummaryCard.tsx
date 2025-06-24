@@ -44,9 +44,7 @@ const SummaryCard: React.FC<Props> = ({
 
   return (
     <div
-      className={`card-main bg-[var(--primary-light)] hover:bg-[var(--hover-bg)] reflection rounded-xl border border-[var(--secondary-light)] z-20 ${
-        isLocked ? "hover:transform hover:none" : ""
-      }`}
+      className={`card-main bg-[var(--primary-light)] hover:bg-[var(--hover-bg)] reflection rounded-xl border border-[var(--secondary-light)] z-20 hover:transform hover:scale-[1.02]`}
       key={id}
       style={{ animationDelay: `${index * 0.07}s` }}
     >
@@ -63,7 +61,7 @@ const SummaryCard: React.FC<Props> = ({
           }}
         >
           {isLocked && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[var(--secondary-light)]">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[var(--secondary)]">
               <Lock size={40} className={`${shakeLock ? "shake" : ""}`} />
             </div>
           )}

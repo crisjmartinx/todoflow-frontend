@@ -25,8 +25,8 @@ export default function Page({
       </div>
 
       <div
-        className="h-auto w-full fixed z-50 bottom-0 "
-        style={{ boxShadow: "0px 39px 45px 100px #ebebeb" }}
+        className="h-auto w-full fixed z-50 bottom-0"
+        style={{ boxShadow: "0px 39px 45px 100px var(--primary)" }}
       ></div>
     </div>
   );

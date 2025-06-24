@@ -4,11 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: var(--primary) !important;
+}
+
+body::-webkit-scrollbar {
+  display: none !important;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --sidebarWidth: 180px;
+  --sidebarWidth: 190px;
 }
 
 .theme-light {
@@ -16,11 +24,13 @@
 
   --text-primary: #000000;
   --text-secondary: #ffffff;
+  --text-tertiary: #6a6a6a;
 
   --primary: #f7f7f7;
   --primary-light: #ffffff;
   --secondary: #000000;
   --secondary-light: #c6c6c6;
+  --tertiary: #8a8a8a;
 
   --hover-bg: #f5f5f5;
 }
@@ -30,11 +40,13 @@
 
   --text-primary: #ffffff;
   --text-secondary: #000000;
+  --text-tertiary: #c6c6c6;
 
   --primary: #000000;
   --primary-light: #050505;
   --secondary: #ededed;
   --secondary-light: #6a6a6a;
+  --tertiary: #2a2a2a;
 
   --hover-bg: #2e2e2e;
 }
@@ -94,14 +106,6 @@ h3 {
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
-
-body {
-  background-color: var(--primary);
-}
-
-body::-webkit-scrollbar {
-  display: none !important;
 }
 
 @layer utilities {
@@ -167,10 +171,17 @@ body::-webkit-scrollbar {
 .card-main {
   transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  box-shadow: 0 50px 90px 1px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 30px 80px 0px var(--tertiary);
   animation: fadeIn 0.6s ease-in-out forwards, zoomIn 0.3s ease-in-out;
   opacity: 0;
+}
+
+.theme-dark .card-main {
+  box-shadow: 0 30px 80px 0px var(--tertiary);
+}
+
+.card-main:hover {
+  transform: scale(1.02);
 }
 
 .text-clamp-2 {
@@ -179,11 +190,6 @@ body::-webkit-scrollbar {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.card-main:hover {
-  box-shadow: 0 50px 110px 1px rgba(0, 0, 0, 0.5);
-  transform: scale(1.02);
 }
 
 .card-main-banner {
@@ -508,7 +514,7 @@ body::-webkit-scrollbar {
 
 .buttonAI {
   border: 2px solid transparent;
-  background-image: linear-gradient(#2e2e2e),
+  background-image: linear-gradient(#000000),
     linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
   background-origin: border-box;
   background-clip: padding-box, border-box;

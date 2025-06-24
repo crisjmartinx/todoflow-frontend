@@ -204,7 +204,7 @@ export const Editor: React.FC<EditorProps> = ({
 
       <div
         ref={editorRef}
-        className={`editor h-full border text-light-dark border-light-light p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto ${
+        className={`editor h-full border text-[var(--secondary)] border-[var(--secondary-light)] p-2.5 rounded outline-none text-base leading-[1.4] whitespace-pre-wrap break-words overflow-auto ${
           activateIA ? "intelligence-container" : ""
         }`}
         contentEditable

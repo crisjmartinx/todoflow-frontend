@@ -15,7 +15,13 @@ export default function ThemeProvider({
       if (saved === "light" || saved === "dark" || saved === "glass") {
         return saved;
       }
+
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      return prefersDark ? "dark" : "light";
     }
+
     return "light";
   });
 
@@ -25,14 +31,6 @@ export default function ThemeProvider({
     html.classList.add(`theme-${theme}`);
     localStorage.setItem("theme", theme);
   }, [theme]);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme !== null) {
-      setTheme(savedTheme as Theme);
-    }
-  });
 
   return (
     <>
@@ -50,16 +48,6 @@ function ThemeSwitcher({
   setTheme: (theme: Theme) => void;
 }) {
   const themes: Theme[] = ["light", "dark", "glass"];
-
-  const currentTheme = localStorage.getItem("theme") as Theme;
-
-  useEffect(() => {
-    if (currentTheme) {
-      setTheme(currentTheme);
-    } else {
-      setTheme("light");
-    }
-  }, [currentTheme, setTheme]);
 
   return (
     <div className="absolute right-4 z-[9999] flex space-x-2 bg-white p-2 rounded shadow dark:bg-gray-800">
