@@ -42,10 +42,10 @@ export const NoteGrid: React.FC<NoteGridProps> = React.memo(
 
     return (
       <div
-        className="card-notes rounded-lg"
+        className="card-notes rounded-lg border-[0.5px] border-[var(--secondary-light)]"
         style={{ animationDelay: `${index * 0.02}s` }}
       >
-        <div className="bg-light rounded-lg shadow-md flex flex-col">
+        <div className="bg-[var(--primary-light)] rounded-lg shadow-lg shadow-[var(--secondary-light)] flex flex-col">
           <div
             className="flex flex-row items-center justify-between rounded-t-lg p-5 filter brightness-[95%] note-title"
             style={{ backgroundColor: `${note.color}` }}
@@ -69,7 +69,7 @@ export const NoteGrid: React.FC<NoteGridProps> = React.memo(
 
           <Link href={`${`/dashboard/notes/${note.id}`}`}>
             <div className="p-5">
-              <span className="text-[.9rem] font-thin text-light-dark h-10 max-h-10 text-clamp-2 select-none">
+              <span className="text-[.9rem] font-thin text-[var(--text-tertiary)] h-10 max-h-10 text-clamp-2 select-none">
                 {removeHTMLTags(note.content).slice(0, 80)}
               </span>
 
@@ -78,15 +78,15 @@ export const NoteGrid: React.FC<NoteGridProps> = React.memo(
                   {note.tagItem}
                 </span>
 
-                <span className="w-max max-w-full rounded-xl border border-gray-500 py-1 px-2 font-light text-xs text-black select-none text-ellipsis overflow-hidden hitespace-nowrap">
+                <span className="w-max max-w-full rounded-xl border border-gray-500 py-1 bg-white px-2 font-light text-xs text-black select-none text-ellipsis overflow-hidden hitespace-nowrap">
                   {(note.tag as any)?.name}
                 </span>
               </div>
             </div>
 
-            <div className=" bg-light-light flex justify-between px-5 py-2 rounded-b-lg">
-              <CalendarClock size={17} color="black" />
-              <span className="font-extralight text-sm text-black whitespace-nowrap overflow-hidden text-ellipsis select-none">
+            <div className=" bg-[var(--primary)] flex justify-between px-5 py-2 rounded-b-lg">
+              <CalendarClock size={17} className="text-[var(--secondary)]" />
+              <span className="font-extralight text-sm text-[var(--secondary)] whitespace-nowrap overflow-hidden text-ellipsis select-none">
                 {new Date(note.createdAt).toLocaleString("es-ES", {
                   dateStyle: "short",
                   timeStyle: "short",

@@ -31,7 +31,7 @@ export const AnimatedButton = ({
 
   return (
     <div
-      className="flex items-center justify-center gap-2 text-light bg-light-dark font-extralight text-sx px-3 py-2 rounded-lg hover:bg-light-dark_hover"
+      className="flex items-center justify-center gap-2 text-[var(--primary)] bg-[var(--secondary)] font-extralight text-sx px-3 py-2 rounded-lg hover:opacity-90"
       style={{
         width,
         transition:
@@ -56,7 +56,7 @@ export const AnimatedButton = ({
 
           <div className="whitespace-nowrap overflow-hidden leading-none font-light">
             <div className="slide-up" key={isOpen ? "ready" : "add"}>
-              <span className="text-sm text-light">
+              <span className="text-sm text-[var(--primary)]">
                 {isOpen ? openText : text}
               </span>
             </div>
@@ -64,7 +64,7 @@ export const AnimatedButton = ({
         </>
       ) : (
         <div className="py-[0.15rem]">
-          <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-white border-l-transparent"></div>
+          <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-[var(--primary)] border-l-transparent"></div>
         </div>
       )}
     </div>

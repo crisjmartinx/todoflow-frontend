@@ -199,10 +199,10 @@ export const NewNote: React.FC<NewNoteProps> = ({
       className={`container-modal bg-light-dark translate-y-[1200px] backdrop-blur-[100px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center top-[12.2rem] md:top-[9.6rem]`}
     >
       {loadingSave && <div className="loader"></div>}
-      <form className="flex flex-col bg-light p-6 w-full h-full">
+      <form className="flex flex-col bg-[var(--primary)] p-6 w-full h-full">
         <input
           type="text"
-          className="bg-light text-2xl font-semibold text-gray-600 pb-5 focus:outline-none block overflow-hidden whitespace-nowrap overflow-ellipsis"
+          className="bg-[var(--primary)] text-2xl font-semibold text-[var(--text-primary)] pb-5 focus:outline-none block overflow-hidden whitespace-nowrap overflow-ellipsis"
           placeholder="Titulo nota..."
           value={formData.title}
           onChange={(e) =>
@@ -215,7 +215,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
 
         <div className="flex justify-start items-start gap-4">
           <button
-            className="flex items-start space-x-2 w-auto border border-light-light rounded-lg p-1.5"
+            className="flex items-start space-x-2 w-auto border border-[var(--secondary-light)] rounded-lg p-1.5"
             type="button"
             onClick={() => setShowCategories((prev) => !prev)}
             style={{
@@ -224,24 +224,26 @@ export const NewNote: React.FC<NewNoteProps> = ({
               transition: showCategories
                 ? "min-height 0.1s ease-in-out"
                 : "min-height 0.1s ease-in-out",
-              background: showCategories ? "#FAFAFA" : "#FFF",
+              background: showCategories ? "var(--primary)" : "var(--primary)",
             }}
           >
-            <Tags className="text-light-dark self-center" size={16} />
-            <span className="text-black font-semibold text-sm select-none">
+            <Tags className="text-[var(--secondary)] self-center" size={16} />
+            <span className="text-[var(--secondary)] font-light text-sm select-none">
               Tags
             </span>
 
             <div
-              className="absolute left-[1rem] mt-8 rounded-r-lg rounded-bl-lg z-10 border border-gray-200"
+              className="absolute left-[1rem] mt-8 rounded-r-lg rounded-bl-lg z-10 border border-[var(--secondary-light)]"
               style={{
-                width: showCategories ? "calc(100% - 63px)" : "0px",
+                width: showCategories ? "calc(100% - 50px)" : "0px",
                 overflow: "hidden",
                 transition: showCategories
                   ? "width 0.1s ease-in-out"
                   : "width 0.05s ease-in-out",
                 whiteSpace: "nowrap",
-                background: showCategories ? "#FAFAFA" : "#FFF",
+                background: showCategories
+                  ? "var(--primary)"
+                  : "var(--primary)",
                 zIndex: 100,
               }}
             >

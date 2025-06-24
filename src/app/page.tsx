@@ -178,18 +178,18 @@ export default function page() {
   return (
     <>
       {status === "loading" && (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-light-dark"></div>
+        <div className="flex justify-center items-center h-screen bg-[var(--primary)]">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-[var(--secondary)]"></div>
         </div>
       )}
 
       {status === "unauthenticated" && (
-        <div className=" bg-light-light h-screen w-full flex items-center">
+        <div className="bg-[var(--primary)] h-screen w-full flex items-center">
           <div className="mx-auto p-3 w-[34rem]">
             <div className="h-auto  ">
-              <div className="bg-light-dark w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
+              <div className="bg-[var(--secondary)] w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
                 <span
-                  className="text-light text-3xl font-medium"
+                  className="text-[var(--text-secondary)] text-3xl font-medium"
                   style={{
                     transform:
                       avatar.length > 0
@@ -204,10 +204,10 @@ export default function page() {
               </div>
 
               <div className="text-center mt-2 pt-9">
-                <h5 className="font-semibold text-3xl text-light-dark">
+                <h5 className="font-semibold text-3xl text-[var(--text-primary)]">
                   Bienvenido
                 </h5>
-                <span className="font-extralight text-lg block pt-2 text-gray-500">
+                <span className="font-thin text-base block pt-2 text-[--text-primary] opacity-60">
                   Ingresa mail & clave para continuar
                 </span>
               </div>
@@ -215,27 +215,27 @@ export default function page() {
               <form onSubmit={handleSubmit}>
                 <div className="inline-flex justify-center items-center pt-7 mt-3 w-full">
                   <div
-                    className="border py-[10px] px-4  rounded-[14px] inline-flex items-center gap-3"
+                    className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08)",
+                      boxShadow: "0 20px 180px 0px var(--secondary-light)",
                       border: errors.includes("User not found")
                         ? "2px solid red"
-                        : "none",
+                        : "0.1px solid var(--secondary-light)",
                       animation: errors.includes("User not found")
                         ? "shake 0.3s"
                         : "none",
                     }}
                   >
                     <Mail
-                      className="text-[#3d3d3d] m-1"
+                      className="text-[var(--secondary)] m-1"
                       style={{ flex: "1 0 23px" }}
                     />
 
-                    <span className="bg-[#bababa] w-[1px] h-8"></span>
+                    <span className="bg-[var(--secondary)] w-[1px] h-8"></span>
 
                     <input
-                      className="text-[#3d3d3d] p-2 focus:outline-none"
+                      className="text-[var(--secondary)] p-2 focus:outline-none"
                       type="email"
                       name="email"
                       placeholder="Enter your mail"
@@ -262,24 +262,24 @@ export default function page() {
                     className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 0 5px 0px rgba(0, 0, 0, 0.08)",
+                      boxShadow: "0 20px 180px 0px var(--secondary-light)",
                       border: errors.includes("Password incorrect")
                         ? "2px solid red"
-                        : "none",
+                        : "0.1px solid var(--secondary-light)",
                       animation: errors.includes("Password incorrect")
                         ? "shake 0.3s"
                         : "none",
                     }}
                   >
                     <KeyRound
-                      className="text-[#3d3d3d] m-1"
+                      className="text-[var(--secondary)] m-1"
                       style={{ flex: "1 0 23px" }}
                     />
 
-                    <span className="bg-[#bababa] w-[1px] h-8"></span>
+                    <span className="bg-[var(--secondary)] w-[1px] h-8"></span>
 
                     <input
-                      className="text-[#3d3d3d] p-2 focus:outline-none"
+                      className="text-[var(--secondary)] p-2 focus:outline-none"
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
@@ -299,7 +299,7 @@ export default function page() {
                     {showPassword ? (
                       <EyeOff
                         size={31}
-                        className="text-[#3d3d3d] m-1 cursor-pointer"
+                        className="text-[var(--secondary)] m-1 cursor-pointer"
                         type="button"
                         onClick={togglePasswordVisibility}
                         aria-label={
@@ -309,7 +309,7 @@ export default function page() {
                     ) : (
                       <Eye
                         size={31}
-                        className="text-[#3d3d3d] m-1 cursor-pointer"
+                        className="text-[var(--secondary)] m-1 cursor-pointer"
                         type="button"
                         onClick={togglePasswordVisibility}
                         aria-label={
@@ -334,8 +334,8 @@ export default function page() {
                           checked={rememberMe}
                           onChange={(e) => setRememberMe(e.target.checked)}
                         />
-                        <span className="w-6 h-6 border border-gray-300 rounded-[8px] peer-checked:bg-black"></span>
-                        <span className="text-gray-500 font-light cursor-default">
+                        <span className="w-6 h-6 border border-gray-300 rounded-[8px] peer-checked:bg-[var(--secondary)]"></span>
+                        <span className="text-[var(--text-primary)] opacity-60 font-thin text-base cursor-default">
                           Recordar
                         </span>
                       </label>
@@ -351,16 +351,16 @@ export default function page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-light-dark text-lg font-light p-[12px] rounded-[14px] text-[#FFF] hover:bg-light-dark_hover transition-colors duration-300"
+                    className="bg-[var(--secondary)] text-lg font-light p-[12px] rounded-[14px] text-[var(--text-secondary)] transition-colors duration-300"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 23px 25px 1px rgba(0, 0, 0, 0.28)",
+                      boxShadow: "0 20px 180px 5px var(--secondary-light)",
                     }}
                   >
                     {loading ? (
                       <div className="flex justify-center items-center">
                         <span className="mr-3">Accediendo</span>
-                        <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-white border-l-transparent"></div>
+                        <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-[var(--primary)] border-l-transparent"></div>
                       </div>
                     ) : (
                       <span>Acceder</span>
@@ -459,7 +459,7 @@ export default function page() {
           </div>
 
           <div className="absolute bottom-5 text-center w-full">
-            <h5 className="text-center font-extralight text-gray-800">
+            <h5 className="text-center font-extralight text-[var(--text-primary)]">
               Cristian's Project © 2025
             </h5>
           </div>
