@@ -21,8 +21,8 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
         className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
             ${
               isMatched
-                ? "bg-light-dark hover:bg-light-dark_hover duration-300"
-                : ""
+                ? "bg-[var(--secondary)]"
+                : "hover:bg-[#64646418] duration-300"
             } 
               rounded-lg mb-3`}
         style={{
@@ -30,14 +30,16 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
         }}
       >
         <div
-          className={`p-[2px] ${isMatched ? "invert" : ""}`}
+          className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-30 invert"}`}
           aria-label={name}
         >
           {icon}
         </div>
         <span
           className={`${
-            isMatched ? "text-white" : "text-light-dark"
+            isMatched
+              ? "text-[var(--text-secondary)]"
+              : "text-[--text-primary] opacity-30"
           } font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
         >
           {name}

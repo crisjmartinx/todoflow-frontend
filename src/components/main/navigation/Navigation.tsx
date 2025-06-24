@@ -40,7 +40,7 @@ const Navigation: React.FC<Props> = ({ title }) => {
       ref={navRef}
     >
       <div className="mx-auto max-w-[1600px] justify-between px-5 md:px-5 py-5 items-center">
-        <h3 className="text-light-dark text-3xl font-bold select-none">
+        <h3 className="text-[var(--text-primary)] text-3xl font-bold select-none">
           {title}
         </h3>
       </div>

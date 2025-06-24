@@ -21,7 +21,7 @@ const LockItems: Record<string, { name: string; path: string }> = {
   finances: { name: "Finanzas", path: "/dashboard/finances" },
 };
 
-const Card: React.FC<Props> = ({
+const SummaryCard: React.FC<Props> = ({
   id,
   index,
   name,
@@ -44,7 +44,7 @@ const Card: React.FC<Props> = ({
 
   return (
     <div
-      className={`card-main reflection rounded-xl border border-gray-200 z-20 ${
+      className={`card-main bg-[var(--primary-light)] hover:bg-[var(--hover-bg)] reflection rounded-xl border border-[var(--secondary-light)] z-20 ${
         isLocked ? "hover:transform hover:none" : ""
       }`}
       key={id}
@@ -56,22 +56,23 @@ const Card: React.FC<Props> = ({
         onClick={isLocked ? handleLockClick : undefined}
       >
         <div
-          className={`bg-light border-[3px] p-5 rounded-xl flex flex-col justify-between h-full`}
+          className={`border-[3px] p-5 rounded-xl flex flex-col justify-between h-full`}
           style={{
             borderColor: isLocked ? "#00000069" : color,
             background: isLocked ? "#00000069" : "",
           }}
         >
           {isLocked && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-light-dark">
-              <Lock size={60} className={`${shakeLock ? "shake" : ""}`} />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[var(--secondary-light)]">
+              <Lock size={40} className={`${shakeLock ? "shake" : ""}`} />
             </div>
           )}
+
           <div className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xl font-medium text-light-dark select-none whitespace-nowrap overflow-hidden text-ellipsis">
+            <span className="text-xl font-medium text-[var(--secondary)] select-none whitespace-nowrap overflow-hidden text-ellipsis">
               {name}
             </span>
-            <UserIcon size={22} className="text-light-dark ml-5" />
+            <UserIcon size={22} className="text-[var(--secondary)] ml-5" />
           </div>
 
           <div className="w-full">
@@ -84,11 +85,13 @@ const Card: React.FC<Props> = ({
             ></div>
 
             <div>
-              <span className="block text-[18px] font-semibold text-light-dark select-none py-1 whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="block text-[18px] font-semibold select-none py-1 whitespace-nowrap overflow-hidden text-ellipsis">
                 {loading ? (
-                  <div className="spinner-save-data-button inline-block border-2 border-black border-r-transparent"></div>
+                  <div className="spinner-save-data-button inline-block border-2 border-[var(--secondary)] border-r-transparent"></div>
                 ) : (
-                  <span className="font-medium">{amount}</span>
+                  <span className="font-thin text-sm text-[var(--secondary)]">
+                    {amount}
+                  </span>
                 )}
               </span>
             </div>
@@ -99,4 +102,4 @@ const Card: React.FC<Props> = ({
   );
 };
 
-export default Card;
+export default SummaryCard;
