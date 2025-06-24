@@ -1,7 +1,8 @@
 "use client";
 
-import Card from "@/components/main/card";
 import Navigation from "@/components/main/navigation/Navigation";
+import SummaryCard from "@/components/ui/cards/SummaryCard";
+
 import { useTotalNotes } from "@/hooks/useTotalNotes";
 import { Lock } from "lucide-react";
 
@@ -55,28 +56,28 @@ export default function page() {
   ];
 
   return (
-    <div className="h-auto my-[4.6rem] md:my-[4.6rem] container-items main-content">
+    <div className="h-auto bg-[var(--primary-light)] mt-[4.6rem] md:mt-[4.6rem] container-items main-content">
       <div className="overflow-x-clip">
         <section>
           <Navigation title="Mi Actividad" />
 
-          <div className=" p-5 mt-0 mx-auto max-w-[1600px]">
+          <div className="p-5 mt-0 mx-auto max-w-[1600px]">
             <div className="grid gap-4 mb-20 md:grid-cols-2 lg:grid-cols-4">
               {lists.map((list, index) => (
-                <Card key={list.id} index={index} {...list} />
+                <SummaryCard key={list.id} index={index} {...list} />
               ))}
             </div>
-            <div className="h-[1.5px] bg-light-dark w-auto rounded-xl my-2 mx-1"></div>
+            <div className="h-[1.5px] bg-[var(--secondary-light)] w-auto rounded-xl my-2 mx-1"></div>
           </div>
         </section>
 
         <section>
           <Navigation title="Dashboard 2" />
           <div className="p-5 mt-0 mx-auto mb-0 max-w-[1600px]">
-            <div className="card-main-banner reflection rounded-xl border border-gray-200 mb-20 hover:transform hover:none">
-              <div className="h-72 bg-[#00000069]">
+            <div className="card-main-banner reflection rounded-xl border border-[var(--secondary-light)] mb-20 hover:transform hover:none">
+              <div className="h-72 bg-[var(--primary-light)] hover:bg-[var(--hover-bg)]">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <Lock className="text-light-dark" size={60} />
+                  <Lock className="text-[var(--secondary-light)]" size={40} />
                 </div>
               </div>
             </div>

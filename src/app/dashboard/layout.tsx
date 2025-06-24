@@ -1,7 +1,7 @@
 import React from "react";
 
-import Header from "@/components/main/header/Header";
-import Sidebar from "@/components/main/sidebar/Sidebar";
+import Header from "@/components/ui/header/Header";
+import Sidebar from "@/components/ui/sidebar/Sidebar";
 
 interface DashboardLayout {
   children: React.ReactNode;

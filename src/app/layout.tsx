@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
 import "./globals.css";
+import { Inter } from "next/font/google";
+
 import Providers from "@/store/Provider";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
 

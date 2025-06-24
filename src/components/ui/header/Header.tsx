@@ -14,16 +14,16 @@ export default function Header() {
 
   return (
     <header
-      className="bg-light-light py-5 px-5 md:px-5 overflow-hidden fixed w-full top-0 z-[200]"
+      className="bg-[var(--primary)] py-5 px-5 md:px-5 overflow-hidden fixed w-full top-0 z-[200]"
       id="header"
     >
       <div className="flex justify-between items-center">
-        <span className="text-light-dark text-2xl font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+        <span className="text-[var(--text-primary)] text-2xl font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
           Mi Dashboard
         </span>
 
         <div className="flex items-center gap-5">
-          <span className="text-light-dark text-lg font-extralight max-w-50 whitespace-nowrap overflow-hidden text-ellipsis">
+          <span className="text-[var(--text-primary)] text-lg font-thin max-w-50 whitespace-nowrap overflow-hidden text-ellipsis">
             {session?.user && <>{session?.user.name}</>}
           </span>
 

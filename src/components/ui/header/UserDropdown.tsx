@@ -56,28 +56,28 @@ const UserDropdown = ({ handleLogout }: Props) => {
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="p-2 rounded-full border-[1px] border-light-dark hover:bg-gray-200 transition"
+        className="p-2 rounded-full border-[1px] border-[var(--secondary-light)] hover:bg-[var(--hover-bg)] transition"
       >
-        <User className="text-light-dark" size={17} />
+        <User className="text-[var(--text-primary)]" size={17} />
       </button>
 
       {isOpen && (
-        <div className="fixed right-5 mt-2 w-48 bg-white shadow-2xl rounded-lg border z-[100]">
+        <div className="fixed right-5 mt-2 w-48 bg-[var(--primary)] shadow-2xl rounded-lg border border-[var(--secondary-light)] z-[100]">
           <ul className="py-1">
-            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight text-black">
+            <li className="flex items-center justify-between px-4 py-2 hover:bg-[var(--hover-bg)] cursor-pointer font-extralight text-[var(--text-primary)]">
               <span>Perfil</span>
 
               <User size={17} />
             </li>
-            <li className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointe font-extralight text-black">
+            <li className="flex items-center justify-between px-4 py-2 hover:bg-[var(--hover-bg)] cursor-pointe font-extralight text-[var(--text-primary)]">
               <span>Configuración</span>
 
               <Settings size={17} />
             </li>
 
-            <hr className="mx-2" />
+            <div className="mx-2 h-[0.5px] bg-[var(--secondary-light)]" />
             <li
-              className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer font-extralight text-black"
+              className="flex items-center justify-between px-4 py-2 hover:bg-[var(--hover-bg)] cursor-pointer font-extralight text-[--text-primary]"
               onClick={handleLogout}
             >
               <span>Cerrar sesión</span>
