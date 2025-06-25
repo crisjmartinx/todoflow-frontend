@@ -9,21 +9,21 @@ export default function ThemeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<Theme>("light");
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
       if (saved === "light" || saved === "dark" || saved === "glass") {
-        return saved;
+        setTheme(saved);
+      } else {
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        setTheme(prefersDark ? "dark" : "light");
       }
-
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      return prefersDark ? "dark" : "light";
     }
-
-    return "light";
-  });
+  }, []);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -32,40 +32,22 @@ export default function ThemeProvider({
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? "dark" : "light");
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
   return (
     <>
       {/* <ThemeSwitcher theme={theme} setTheme={setTheme} /> */}
       {children}
     </>
-  );
-}
-
-function ThemeSwitcher({
-  theme,
-  setTheme,
-}: {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}) {
-  const themes: Theme[] = ["light", "dark", "glass"];
-
-  return (
-    <div className="absolute right-4 z-[9999] flex space-x-2 bg-white p-2 rounded shadow dark:bg-gray-800">
-      {themes.map((t) => (
-        <button
-          key={t}
-          className={`capitalize px-3 py-1 rounded transition-colors duration-200 ${
-            theme === t
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
-          }`}
-          onClick={() => setTheme(t)}
-          aria-pressed={theme === t}
-          aria-label={`Switch to ${t} theme`}
-        >
-          {t}
-        </button>
-      ))}
-    </div>
   );
 }
