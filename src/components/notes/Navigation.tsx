@@ -70,24 +70,24 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
           <div
             className={`flex items-center border gap-2 rounded-lg ml-0 md:ml-auto mr-0 md:mr-5 ${
               addNoteModalOpen ? "hidden" : "p-2 mb-4"
-            } md:mb-0 w-full md:w-auto bg-[var(--secondary)]`}
+            } md:mb-0 w-full md:w-auto bg-[var(--primary)]`}
           >
             {!addNoteModalOpen && (
               <>
-                <Search size={17} className="text-[var(--primary)]" />
+                <Search size={17} className="text-[var(--secondary)]" />
 
                 <input
                   type="text"
                   placeholder="Buscar notas..."
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
-                  className="focus:outline-none bg-[var(--secondary)] text-[13px] box-border text-[var(--primary)] w-full md:w-64 whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="focus:outline-none bg-[var(--primary)] text-[13px] box-border text-[var(--secondary)] w-full md:w-64 whitespace-nowrap overflow-hidden text-ellipsis"
                 />
 
                 {search && (
                   <X
                     size={17}
-                    className="text-[var(--primary)] cursor-pointer"
+                    className="text-[var(--secondary)] cursor-pointer"
                     onClick={() => setSearch("")}
                   />
                 )}

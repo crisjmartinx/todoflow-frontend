@@ -351,15 +351,14 @@ export default function page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-[var(--secondary)] text-lg font-light p-[12px] rounded-[14px] text-[var(--text-secondary)] transition-colors duration-300"
+                    className="bg-[var(--secondary)] text-lg font-light p-[12px] rounded-[14px] text-[var(--text-secondary)]"
                     style={{
                       flex: "0 1 335px",
                       boxShadow: "0 20px 180px 5px var(--secondary-light)",
                     }}
                   >
                     {loading ? (
-                      <div className="flex justify-center items-center">
-                        <span className="mr-3">Accediendo</span>
+                      <div className="flex justify-center items-center p-[0.400rem]">
                         <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-[var(--primary)] border-l-transparent"></div>
                       </div>
                     ) : (
