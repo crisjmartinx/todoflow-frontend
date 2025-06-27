@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 
 import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
+import Button from "@/components/ui/buttons/Button";
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 10000;
@@ -178,15 +179,15 @@ export default function page() {
   return (
     <>
       {status === "loading" && (
-        <div className="flex justify-center items-center h-screen bg-[var(--primary)]">
+        <div className="flex justify-center items-center h-screen-dvh hero-login">
           <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-3 border-[var(--secondary)]"></div>
         </div>
       )}
 
       {status === "unauthenticated" && (
-        <div className="bg-[var(--primary)] h-screen w-full flex items-center">
-          <div className="mx-auto p-3 w-[34rem]">
-            <div className="h-auto  ">
+        <div className="hero-login relative overflow-hidden h-screen-dvh w-full flex items-center">
+          <div className="mx-auto p-5 w-[34rem] glass">
+            <div className="h-auto">
               <div className="bg-[var(--secondary)] w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
                 <span
                   className="text-[var(--text-secondary)] text-3xl font-medium"
@@ -218,10 +219,10 @@ export default function page() {
                     className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 20px 180px 0px var(--secondary-light)",
+                      // boxShadow: "0 20px 180px 0px var(--secondary-light)",
                       border: errors.includes("User not found")
                         ? "2px solid red"
-                        : "0.1px solid var(--secondary-light)",
+                        : "0.1px solid var(--highlight)",
                       animation: errors.includes("User not found")
                         ? "shake 0.3s"
                         : "none",
@@ -262,10 +263,10 @@ export default function page() {
                     className="border py-[10px] px-4 rounded-[14px] inline-flex items-center gap-3"
                     style={{
                       flex: "0 1 335px",
-                      boxShadow: "0 20px 180px 0px var(--secondary-light)",
+                      // boxShadow: "0 20px 180px 0px var(--secondary-light)",
                       border: errors.includes("Password incorrect")
                         ? "2px solid red"
-                        : "0.1px solid var(--secondary-light)",
+                        : "0.1px solid var(--highlight)",
                       animation: errors.includes("Password incorrect")
                         ? "shake 0.3s"
                         : "none",
@@ -334,7 +335,7 @@ export default function page() {
                           checked={rememberMe}
                           onChange={(e) => setRememberMe(e.target.checked)}
                         />
-                        <span className="w-6 h-6 border border-gray-300 rounded-[8px] peer-checked:bg-[var(--secondary)]"></span>
+                        <span className="w-6 h-6 border-[0.1px] border-[var(--highlight)] rounded-[8px] peer-checked:bg-[var(--secondary)]"></span>
                         <span className="text-[var(--text-primary)] opacity-60 font-thin text-base cursor-default">
                           Recordar
                         </span>
@@ -347,24 +348,10 @@ export default function page() {
                   </div>
                 </div>
 
-                <div className="w-full flex justify-center pt-7 mt-2 mb-10 ">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-[var(--secondary)] text-lg font-light p-[12px] rounded-[14px] text-[var(--text-secondary)]"
-                    style={{
-                      flex: "0 1 335px",
-                      boxShadow: "0 20px 180px 5px var(--secondary-light)",
-                    }}
-                  >
-                    {loading ? (
-                      <div className="flex justify-center items-center p-[0.400rem]">
-                        <div className="spinner-save-data-button border-[2px] border-solid border-t-transparent border-r-transparent border-b-[var(--primary)] border-l-transparent"></div>
-                      </div>
-                    ) : (
-                      <span>Acceder</span>
-                    )}
-                  </button>
+                <div className="w-full flex justify-center pt-7 mt-2 mb-10">
+                  <Button type="submit" loading={loading}>
+                    Acceder
+                  </Button>
                 </div>
 
                 <div
