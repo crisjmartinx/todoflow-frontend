@@ -26,10 +26,14 @@ body::-webkit-scrollbar {
   --text-tertiary: #6a6a6a;
   --primary: #f7f7f7;
   --primary-light: #ffffff;
+  --glass: #ffffffbf;
   --secondary: #000000;
   --secondary-light: #c6c6c6;
   --tertiary: #8a8a8a;
+  --color-primary: #1900ff;
+  --color-secondary: #314db2;
   --hover-bg: #f5f5f5;
+  --highlight: #ffffffbf;
 }
 
 .theme-dark {
@@ -39,17 +43,14 @@ body::-webkit-scrollbar {
   --text-tertiary: #c6c6c6;
   --primary: #000000;
   --primary-light: #050505;
+  --glass: #ffffff00;
   --secondary: #ededed;
   --secondary-light: #6a6a6a;
   --tertiary: #2a2a2a;
+  --color-primary: #1900ff;
+  --color-secondary: #314db2;
   --hover-bg: #2e2e2e;
-}
-
-.theme-glass {
-  --bg-main: rgba(255, 255, 255, 0.1);
-  --text-main: white;
-  --card-bg: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  --highlight: #ffffff31;
 }
 
 div,
@@ -138,6 +139,26 @@ h3 {
 
 .slide-up {
   animation: slideUp 0.15s cubic-bezier(0.075, 0.82, 0.165, 1) both;
+}
+
+.hero-login::before {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+  transform: translateX(-50%);
+  bottom: -300px;
+  left: 50%;
+  filter: blur(250px);
+  animation: breathing 7s ease-in-out infinite;
 }
 
 .card-main {
@@ -405,103 +426,47 @@ h3 {
   animation: moveBackground 120s linear infinite;
 }
 
-.glassContainer {
-  position: fixed;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 300px;
-  height: 200px;
-  border-radius: 30px;
-}
-
-.glassContainer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  border-radius: 30px;
-  -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
-    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
-  box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
-    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
-}
-
-.glassContainer::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  border-radius: 30px;
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
-  -webkit-filter: url(#container-glass);
-  filter: url(#container-glass);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.glassBtn {
+.glass {
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 200px;
-  height: 200px;
-  padding: 15px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  overflow: hidden;
   background: transparent;
-  border-radius: 9999px;
+  transition: transform 0.2s ease;
   outline: none;
-  border: none;
-  z-index: 0;
 }
 
-.glassBtn::before {
-  content: "";
+.glass-filter,
+.glass-overlay,
+.glass-specular {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  border-radius: 9999px;
-  -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
-    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
-  box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
-    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
-  background-color: rgb(255 255 255 / 10%);
+  border-radius: inherit;
 }
 
-.glassBtn::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  border-radius: 9999px;
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
-  -webkit-filter: url(#btn-glass);
-  filter: url(#btn-glass);
-  overflow: hidden;
-  isolation: isolate;
+.glass-filter {
+  z-index: 1;
+  backdrop-filter: blur(4px);
+  filter: url(#glass-distortion) saturate(120%) brightness(1.15);
 }
 
-.glassBtn svg {
-  width: 100%;
-  height: 100%;
-  stroke: #fff;
+.glass-overlay {
+  z-index: 2;
+  background: var(--);
+}
+
+.glass-specular {
+  z-index: 3;
+  box-shadow: inset 1px 1px 1px var(--highlight);
+  border: 0.05px solid var(--highlight);
+}
+
+.glass-content {
+  position: relative;
+  z-index: 4;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 16px;
 }
 
 @keyframes fadeIn {
@@ -701,5 +666,17 @@ h3 {
   }
   to {
     background-position: 0% -1000%;
+  }
+}
+
+@keyframes breathing {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 0.8;
   }
 }
