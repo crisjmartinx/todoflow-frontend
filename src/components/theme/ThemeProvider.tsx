@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Theme = "light" | "dark" | "glass";
+type Theme = "light" | "dark";
 
 export default function ThemeProvider({
   children,
@@ -14,7 +14,8 @@ export default function ThemeProvider({
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
-      if (saved === "light" || saved === "dark" || saved === "glass") {
+
+      if (saved === "light" || saved === "dark") {
         setTheme(saved);
       } else {
         const prefersDark = window.matchMedia(
@@ -27,16 +28,23 @@ export default function ThemeProvider({
 
   useEffect(() => {
     const html = document.documentElement;
-    html.classList.remove("theme-light", "theme-dark", "theme-glass");
+    html.classList.remove("theme-light", "theme-dark");
     html.classList.add(`theme-${theme}`);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
     const handleChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? "dark" : "light");
+      const newTheme = e.matches ? "dark" : "light";
+
+      document.documentElement.classList.remove("theme-light", "theme-dark");
+
+      setTheme(newTheme);
     };
+
+    localStorage.removeItem("theme");
 
     mediaQuery.addEventListener("change", handleChange);
     return () => {

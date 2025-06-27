@@ -45,13 +45,6 @@ body::-webkit-scrollbar {
   --hover-bg: #2e2e2e;
 }
 
-.theme-glass {
-  --bg-main: rgba(255, 255, 255, 0.1);
-  --text-main: white;
-  --card-bg: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-}
-
 div,
 p,
 h1,
