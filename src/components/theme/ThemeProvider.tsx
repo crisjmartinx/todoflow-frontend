@@ -11,26 +11,26 @@ export default function ThemeProvider({
 }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme");
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const saved = localStorage.getItem("theme");
 
-      if (saved === "light" || saved === "dark") {
-        setTheme(saved);
-      } else {
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        setTheme(prefersDark ? "dark" : "light");
-      }
-    }
-  }, []);
+  //     if (saved === "light" || saved === "dark") {
+  //       setTheme(saved);
+  //     } else {
+  //       const prefersDark = window.matchMedia(
+  //         "(prefers-color-scheme: dark)"
+  //       ).matches;
+  //       setTheme(prefersDark ? "dark" : "light");
+  //     }
+  //   }
+  // }, []);
 
   useEffect(() => {
     const html = document.documentElement;
     html.classList.remove("theme-light", "theme-dark");
     html.classList.add(`theme-${theme}`);
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("theme", "dark");
   }, [theme]);
 
   // useEffect(() => {
