@@ -45,6 +45,9 @@ const config: Config = {
         "calc-100-minus-12rem": "calc(100% - 12rem)",
         "calc-100-minus-3rem": "calc(100% - 3rem)",
       },
+      height: {
+        "screen-dvh": "100dvh",
+      },
     },
   },
   plugins: [],
