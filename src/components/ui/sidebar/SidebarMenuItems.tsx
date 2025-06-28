@@ -15,38 +15,34 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
     `/dashboard/${currentSection}` === path || currentSection === path;
 
   return (
-    <>
-      <Link
-        href={path}
-        className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
+    <Link
+      href={path}
+      className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
             ${
               isMatched
-                ? "bg-[var(--secondary)]"
+                ? "bg-[linear-gradient(to_top,_#747474_12%,_#e7e7e7_100%)] border-b-[1px] border-[#abababe8]"
                 : "hover:bg-[#64646418] duration-300"
             } 
               rounded-lg mb-3`}
-        style={{
-          boxShadow: isMatched
-            ? "0 8px 25px 0px var(--secondary-light)"
-            : "none",
-        }}
+      style={{
+        boxShadow: isMatched ? "0 3px 40px 0px var(--secondary-light)" : "none",
+      }}
+    >
+      <div
+        className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-50 invert"}`}
+        aria-label={name}
       >
-        <div
-          className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-50 invert"}`}
-          aria-label={name}
-        >
-          {icon}
-        </div>
-        <span
-          className={`${
-            isMatched
-              ? "text-[var(--text-secondary)]"
-              : "text-[--text-primary] opacity-50"
-          } font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
-        >
-          {name}
-        </span>
-      </Link>
-    </>
+        {icon}
+      </div>
+      <span
+        className={`${
+          isMatched
+            ? "text-[var(--text-secondary)]"
+            : "text-[--text-primary] opacity-50"
+        } font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
+      >
+        {name}
+      </span>
+    </Link>
   );
 };
