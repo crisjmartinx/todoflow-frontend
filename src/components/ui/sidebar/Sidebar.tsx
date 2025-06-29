@@ -3,6 +3,7 @@
 import {
   BellRing,
   BookOpenText,
+  CircleDollarSign,
   House,
   ListChecks,
   Notebook,
@@ -42,6 +43,12 @@ export default function Sidebar() {
       icon: <BellRing className="text-[var(--primary)]" size={18} />,
       name: "Recordatorios",
       path: "/dashboard/reminders",
+    },
+    {
+      id: 5,
+      icon: <CircleDollarSign className="text-[var(--primary)]" size={18} />,
+      name: "Finanzas",
+      path: "/dashboard/finances",
     },
     {
       id: 6,

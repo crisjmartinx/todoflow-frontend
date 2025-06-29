@@ -164,13 +164,13 @@ h3 {
 .card-main {
   transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 30px 80px 0px var(--tertiary);
+  /* box-shadow: 0 30px 80px 0px var(--tertiary); */
   animation: fadeIn 0.6s ease-in-out forwards, zoomIn 0.3s ease-in-out;
   opacity: 0;
 }
 
 .theme-dark .card-main {
-  box-shadow: 0 30px 80px 0px var(--tertiary);
+  box-shadow: 0 30px 80px 0px #ffffff08;
 }
 
 .card-main:hover {
