@@ -20,26 +20,19 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
       className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
             ${
               isMatched
-                ? "bg-[linear-gradient(to_top,_#747474_12%,_#e7e7e7_100%)] border-b-[1px] border-[#abababe8]"
+                ? "border-[0.005px] border-[var(--secondary-light)] bg-[var(--hover-bg)]"
                 : "hover:bg-[#64646418] duration-300"
             } 
               rounded-lg mb-3`}
       style={{
-        boxShadow: isMatched ? "0 3px 40px 0px var(--secondary-light)" : "none",
+        boxShadow: isMatched ? "0 0px 30px 15px var(--hover-bg)" : "none",
       }}
     >
-      <div
-        className={`p-[2px] ${isMatched ? "opacity-1" : "opacity-50 invert"}`}
-        aria-label={name}
-      >
+      <div className={`p-[2px] invert`} aria-label={name}>
         {icon}
       </div>
       <span
-        className={`${
-          isMatched
-            ? "text-[var(--text-secondary)]"
-            : "text-[--text-primary] opacity-50"
-        } font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
+        className={`text-[var(--text-primary)] font-normal select-none whitespace-nowrap overflow-hidden text-ellipsis hidden md:block`}
       >
         {name}
       </span>
