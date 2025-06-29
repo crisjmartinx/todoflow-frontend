@@ -4,10 +4,22 @@ import Navigation from "@/components/main/navigation/Navigation";
 import SummaryCard from "@/components/ui/cards/SummaryCard";
 
 import { useTotalNotes } from "@/hooks/useTotalNotes";
-import { Lock } from "lucide-react";
+import {
+  BellRing,
+  BookOpenText,
+  CircleDollarSign,
+  ListChecks,
+  Lock,
+  Notebook,
+  Package,
+} from "lucide-react";
 
 export default function page() {
   const { total: totalNotes, loading: loadingNotes } = useTotalNotes();
+
+  /**
+   * TODO: === fetch these lists from an API or a global state ===
+   */
 
   const lists = [
     {
@@ -17,46 +29,52 @@ export default function page() {
       loading: loadingNotes,
       color: "#dc354520",
       link: "/dashboard/notes",
+      icon: <Notebook className="text-[var(--secondary)]" size={20} />,
     },
     {
       id: 1,
       name: "Projectos",
-      amount: 4,
+      amount: 0,
       color: "#28a72520",
       link: "/dashboard/projects",
+      icon: <Package className="text-[var(--secondary)]" size={20} />,
     },
     {
       id: 2,
       name: "Tareas",
-      amount: 40,
+      amount: 0,
       color: "#007bff20",
       link: "/dashboard/tasks",
+      icon: <ListChecks className="text-[var(--secondary)]" size={20} />,
     },
     {
       id: 3,
       name: "Recordatorios",
-      amount: 40,
+      amount: 0,
       color: "#fd7e1420",
       link: "/dashboard/reminders",
+      icon: <BellRing className="text-[var(--secondary)]" size={20} />,
     },
     {
       id: 4,
       name: "Finanzas",
-      amount: 40,
+      amount: 0,
       color: "#e83e8c20",
       link: "/dashboard/finances",
+      icon: <CircleDollarSign className="text-[var(--secondary)]" size={20} />,
     },
     {
       id: 5,
       name: "Aprendizaje",
-      amount: 10,
+      amount: 0,
       color: "#17a2b820",
       link: "/dashboard/learn",
+      icon: <BookOpenText className="text-[var(--secondary)]" size={20} />,
     },
   ];
 
   return (
-    <div className="h-auto bg-[var(--primary-light)] mt-[4.6rem] md:mt-[4.6rem] container-items main-content">
+    <div className="h-auto mt-[4.6rem] md:mt-[4.6rem] container-items">
       <div className="overflow-x-clip">
         <section>
           <Navigation title="Mi Actividad" />
