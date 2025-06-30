@@ -320,7 +320,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
               openText="Resumiendo..."
               isOpen={activateIA}
               onClick={handleGenerate}
-              loading={activateIA || loadingSave}
+              loading={activateIA && loadingSave}
             />
           </div>
         </div>

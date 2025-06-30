@@ -20,11 +20,8 @@ export const Navigation = ({ searchQuery }: { searchQuery: string }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleToggleAddNoteModal = () => {
-    if (addNoteModalOpen) {
-      setIsClosing(true);
-    } else {
-      setAddNoteModalOpen(true);
-    }
+    setAddNoteModalOpen(!addNoteModalOpen);
+    setIsClosing(addNoteModalOpen);
   };
 
   useKeyPress("Escape", handleToggleAddNoteModal, addNoteModalOpen);
