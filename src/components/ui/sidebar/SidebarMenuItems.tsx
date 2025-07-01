@@ -20,12 +20,12 @@ export const SidebarMenuItems = ({ icon, name, path }: Props) => {
       className={`flex w-full justify-center md:justify-start items-center gap-3 py-2 px-4
             ${
               isMatched
-                ? "border-[0.005px] border-[var(--secondary-light)] bg-[var(--hover-bg)]"
+                ? "border-[0.005px] border-[var(--secondary-light)] bg-transparent"
                 : "hover:bg-[#64646418] duration-300"
             } 
               rounded-lg mb-3`}
       style={{
-        boxShadow: isMatched ? "0 0px 30px 15px var(--hover-bg)" : "none",
+        boxShadow: isMatched ? "0 0px 30px 10px var(--hover-bg)" : "none",
       }}
     >
       <div className={`p-[2px] invert`} aria-label={name}>
