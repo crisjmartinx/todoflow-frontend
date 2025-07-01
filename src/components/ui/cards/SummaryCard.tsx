@@ -59,7 +59,7 @@ const SummaryCard: React.FC<Props> = ({
       </svg>
 
       <div
-        className={`bg-[#0000001b] card-main reflection rounded-xl border-[0.005px] border-transparent z-20 hover:transform hover:border-[var(--secondary-light)] hover:scale-[1.02]`}
+        className={`card-main reflection rounded-xl border-[0.005px] border-transparent z-20 hover:bg-[var(--hover-bg)]`}
         key={id}
         style={{ animationDelay: `${index * 0.07}s` }}
       >

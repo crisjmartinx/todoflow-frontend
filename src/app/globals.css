@@ -141,7 +141,7 @@ h3 {
   animation: slideUp 0.15s cubic-bezier(0.075, 0.82, 0.165, 1) both;
 }
 
-.hero-login::before {
+.animated-glow::before {
   content: "";
   position: absolute;
   width: 80%;
@@ -159,6 +159,25 @@ h3 {
   left: 50%;
   filter: blur(250px);
   animation: breathing 7s ease-in-out infinite;
+}
+
+.background-glow::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1100px;
+  background: radial-gradient(
+    circle,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+  transform: translateX(-50%) scale(1.2);
+  bottom: -300px;
+  left: 50%;
+  filter: blur(250px);
 }
 
 .card-main {

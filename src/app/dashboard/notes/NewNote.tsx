@@ -196,7 +196,7 @@ export const NewNote: React.FC<NewNoteProps> = ({
   return (
     <div
       ref={modalRef}
-      className={`container-modal bg-light-dark translate-y-[1200px] backdrop-blur-[100px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center top-[12.2rem] md:top-[9.6rem]`}
+      className={`container-modal translate-y-[1200px] h-[-webkit-fill-available] w-[-webkit-fill-available] fixed z-[100] overflow-hidden flex justify-center items-center top-[12.2rem] md:top-[9.6rem]`}
     >
       {loadingSave && <div className="loader"></div>}
       <form className="flex flex-col bg-[var(--primary)] p-6 w-full h-full">

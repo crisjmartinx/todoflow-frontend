@@ -60,7 +60,7 @@ export default function Sidebar() {
 
   return (
     <aside className="overflow-hidden fixed top-[4.4rem] h-full sidebar z-[60] border-r-[0.5px] border-[var(--secondary-light)]">
-      <div className=" h-full bg-[var(--primary)]">
+      <div className=" h-full bg-transparent backdrop-blur-lg">
         <nav className="pt-7 px-2 md:px-4">
           {menuItems.map((item) => (
             <SidebarMenuItems key={item.path} {...item} />

@@ -15,7 +15,7 @@ export default function Page({
   const searchQuery = searchParams?.search ?? "";
 
   return (
-    <div className="container-items">
+    <div className="container-items overflow-auto">
       <Navigation searchQuery={searchQuery} />
 
       <div className="max-w-[1600px] mx-auto notes-content">
@@ -24,10 +24,10 @@ export default function Page({
         </div>
       </div>
 
-      <div
+      {/* <div
         className="h-auto w-full fixed z-50 bottom-0"
         style={{ boxShadow: "0px 39px 45px 100px var(--primary)" }}
-      ></div>
+      ></div> */}
     </div>
   );
 }
