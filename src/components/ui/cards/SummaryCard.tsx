@@ -91,7 +91,7 @@ const SummaryCard: React.FC<Props> = ({
                 {name}
               </span>
 
-              <div className="bg-[var(--primary)] border-[0.005px] border-gray-600 w-auto p-2 rounded-xl flex items-center justify-center">
+              <div className="bg-transparent backdrop-blur-lg border-[0.005px] border-gray-600 w-auto p-2 rounded-xl flex items-center justify-center">
                 {icon}
               </div>
             </div>
