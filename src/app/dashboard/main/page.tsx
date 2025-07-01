@@ -92,8 +92,23 @@ export default function page() {
         <section>
           <Navigation title="Dashboard 2" />
           <div className="p-5 mt-0 mx-auto mb-0 max-w-[1600px]">
-            <div className="card-main-banner reflection rounded-xl border border-[var(--secondary-light)] mb-20 hover:transform hover:none">
-              <div className="h-72 bg-[var(--primary-light)] hover:bg-[var(--hover-bg)]">
+            <svg style={{ display: "none" }}>
+              <filter id="glass-distortion">
+                <feTurbulence
+                  type="turbulence"
+                  baseFrequency="0.005"
+                  numOctaves="1"
+                  result="noise"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="77" />
+              </filter>
+            </svg>
+
+            <div className="bg-[#0000001b] card-main-banner reflection rounded-xl border-[0.005px] border-transparent mb-20 hover:transform hover:none">
+              <div className="glass-filter"></div>
+              <div className="glass-overlay"></div>
+              <div className="glass-specular"></div>
+              <div className="h-72 bg-transparent hover:bg-[var(--hover-bg)] glass-content">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <Lock className="text-[var(--secondary)]" size={40} />
                 </div>

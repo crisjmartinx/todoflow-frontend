@@ -160,7 +160,7 @@ export const Editor: React.FC<EditorProps> = ({
   return (
     <>
       {showToolbar && (
-        <div className="fixed flex items-baseline justify-start gap-8 bg-light-dark text-light top-32 rounded-md py-1 px-6 select-none">
+        <div className="fixed flex items-baseline justify-start gap-8 text-light top-32 rounded-md py-1 px-6 select-none">
           <TextFormatSelector
             execCommand={execCommand}
             currentTag={currentTag}

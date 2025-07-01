@@ -9,7 +9,7 @@ interface DashboardLayout {
 
 export default async function DashboardLayout({ children }: DashboardLayout) {
   return (
-    <div>
+    <div className="background-glow relative overflow-hidden">
       <Header />
       <div>
         <Sidebar />

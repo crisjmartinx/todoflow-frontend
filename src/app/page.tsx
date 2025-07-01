@@ -185,7 +185,7 @@ export default function page() {
       )}
 
       {status === "unauthenticated" && (
-        <div className="hero-login relative overflow-hidden h-screen-dvh w-full flex items-center">
+        <div className="animated-glow relative overflow-hidden h-screen-dvh w-full flex items-center">
           <div className="mx-auto p-5 w-[34rem] glass">
             <div className="h-auto">
               <div className="bg-[var(--secondary)] w-14 h-14 rounded-xl mx-auto flex items-center justify-center">
